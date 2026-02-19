@@ -4,12 +4,13 @@ export default function LoginPage() {
     return (
         <main className="p-10 bg-white min-h-screen min-w-screen flex justify-center">
             <div className="border border-gray-400 rounded w-full grid grid-cols-[40%_50%] gap-[10%]">
-                <div className="border border-gray-400 rounded h-full w-full flex flex-col justify-between">
+                <div className="border border-gray-400 rounded h-full w-full flex flex-col justify-between p-10 bg-[linear-gradient(309deg,#9cceff,#00339b,#001f5d)] bg-[length:600%_600%]
+    animate-custom-gradient">
                     <div className="flex flex-col">
                         <h3>Con nosotros</h3>
                         <h2>Mejoras cada día</h2>
                     </div>
-                    <div>
+                    <div className="flex justify-center">
                         <h2>ReadFlow</h2>
                     </div>
                 </div>

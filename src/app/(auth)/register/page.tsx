@@ -26,7 +26,8 @@ export default function RegisterPage() {
                     </div>
                 </div>
 
-                <div className="border border-gray-400 rounded h-full w-full flex flex-col justify-between">
+                <div className="border border-gray-400 rounded h-full w-full flex flex-col justify-between bg-[linear-gradient(309deg,#9cceff,#00339b,#001f5d)] bg-[length:600%_600%]
+    animate-custom-gradient">
                     <div className="flex flex-col">
                         <h3>Con nosotros</h3>
                         <h2>Mejora tu retención</h2>
