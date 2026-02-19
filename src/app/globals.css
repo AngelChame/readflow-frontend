@@ -29,5 +29,5 @@ body {
 }
 
 .animate-custom-gradient {
-    animation: moveGradient 30s ease infinite;
+    animation: moveGradient 15s ease infinite;
 }
