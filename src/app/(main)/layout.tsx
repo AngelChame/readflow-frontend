@@ -1,14 +1,13 @@
 
 import Sidebar from "@/components/organisms/Sidebar";
 
-export default function Mainayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <section className="main-container">
-      <body className="antialiased">
+      <section className="antialiased main-container">
         {/* Contenedor principal flex para dividir la pantalla */}
         <div className="flex h-screen w-full overflow-hidden">
           
@@ -23,7 +22,6 @@ export default function Mainayout({
           </main>
           
         </div>
-      </body>
-    </section>
+      </section>
   );
 }
