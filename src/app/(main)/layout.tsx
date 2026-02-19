@@ -1,7 +1,7 @@
 
 import Sidebar from "@/components/organisms/Sidebar";
 
-export default function RootLayout({
+export default function MaLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,13 +12,10 @@ export default function RootLayout({
         {/* Contenedor principal flex para dividir la pantalla */}
         <div className="flex h-screen w-full overflow-hidden">
           
-          {/*Sidebar persistente */}
-          <aside className="w-64 border-r bg-white dark:bg-slate-900">
-            <Sidebar />
-          </aside>
+          <Sidebar />
 
           {/* El contenido dinámico de rutas (Dashboard, Perfil, etc) */}
-          <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-950 p-6">
+          <main className="flex-1 overflow-y-auto p-6">
             {children}
           </main>
           
