@@ -16,12 +16,12 @@ export default function LoginPage() {
 
                 <div className="grid grid-rows-[auto_1fr] gap-10 px-20 py-24 text-black self-center">
                     <div className="flex flex-col gap-3.5">
-                        <h2 className="text-4xl font-semibold">Inicia sesión</h2>
+                        <h2 className="text-5xl font-semibold">Inicia sesión</h2>
                         <p className="text-lg font-light">Bienvenido de nuevo. Mantén tu racha y sigue optimizando tu retención cognitiva.</p>
                     </div>
 
-                    <div className="flex flex-col gap-10">
-                        <form action="" className="flex flex-col gap-3.5">
+                    <div className="flex flex-col gap-8">
+                        <form action="" className="flex flex-col gap-2">
                             <label htmlFor="email" className="text-lg font-bold">Email <span className="text-red-500">*</span></label>
                             <input id="email" type="email" name="email" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Ingresa tu correo" required/>
 
