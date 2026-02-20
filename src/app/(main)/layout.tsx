@@ -1,7 +1,7 @@
 import Sidebar from "@/components/organisms/Sidebar";
 import Header from "@/components/organisms/Header";
 
-export default function MaLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export default function MaLayout({
           <Header />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-4">
           {children}
         </main>
 

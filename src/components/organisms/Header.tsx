@@ -24,7 +24,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between w-full mb-8">
+    <header className="flex items-center justify-between w-full ">
       <h1 className="text-2xl font-semibold text-foreground">
         {getDynamicTitle()}
       </h1>
