@@ -36,3 +36,13 @@ body {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   transition: background-color 0.2s, color 0.2s;
 }
+
+/* para fondo en movimiento del login y el registro*/
+@keyframes moveGradient {
+    0%, 100% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+}
+
+.animate-custom-gradient {
+    animation: moveGradient 10s ease infinite;
+}
