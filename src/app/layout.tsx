@@ -1,10 +1,12 @@
+import { Inter } from "next/font/google";
 import "./globals.css";
-import {Inter} from 'next/font/google'
 
-const inter =  Inter ({
-    subsets: ['latin'],
-    display: 'swap'
-})
+import { Providers } from "./theme-provider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export default function RootLayout({
   children,
@@ -12,9 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={inter.className}>
-      <body className="antialiased">
-        {children}
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${inter.variable} antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
