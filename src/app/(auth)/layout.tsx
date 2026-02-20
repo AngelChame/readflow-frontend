@@ -1,15 +1,11 @@
 
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className="antialiased">
-        {children}
-      </body>
-    </html>
+    <>{children}</>
   );
 }
