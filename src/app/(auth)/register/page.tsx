@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function RegisterPage() {
     return (
         <main className="py-6 px-30 bg-white min-h-screen w-full h-full flex justify-center">
-            <div className="w-full grid grid-cols-[50%_40%] gap-[10%] items-center">
+            <div className="w-full grid grid-cols-[55%_40%] gap-[5%] items-center">
 
                 <div className="grid grid-rows-[auto_1fr] gap-10 px-20 py-24 text-black self-center">
                     <div className="flex flex-col gap-3.5">

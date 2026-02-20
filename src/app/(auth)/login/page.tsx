@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function LoginPage() {
     return (
         <main className="py-6 px-30 bg-white min-h-screen w-full h-full flex justify-center">
-            <div className="w-full grid grid-cols-[40%_50%] gap-[10%]">
+            <div className="w-full grid grid-cols-[40%_55%] gap-[5%]">
                 <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[linear-gradient(309deg,#9cceff,#00339b,#001f5d)] bg-[length:600%_600%] animate-custom-gradient">
                     <div className="flex flex-col gap-3.5 text-white">
                         <h3 className="text-xl font-light">Con nosotros</h3>
