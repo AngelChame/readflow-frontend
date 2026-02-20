@@ -7,26 +7,22 @@ export default function MaLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className="antialiased">
-        <div className="flex h-screen w-full overflow-hidden">
-          
-          <Sidebar />
+    <div className="flex h-screen w-full overflow-hidden">
 
-          <div className="flex-1 flex flex-col overflow-hidden">
-            
-            <div className="px-6 pt-6">
-              <Header />
-            </div>
+      <Sidebar />
 
-            <main className="flex-1 overflow-y-auto p-6">
-              {children}
-            </main>
-            
-          </div>
-          
+      <div className="flex-1 flex flex-col overflow-hidden">
+
+        <div className="px-6 pt-6">
+          <Header />
         </div>
-      </body>
-    </html>
+
+        <main className="flex-1 overflow-y-auto p-6">
+          {children}
+        </main>
+
+      </div>
+
+    </div>
   );
 }
