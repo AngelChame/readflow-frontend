@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function RegisterPage() {
     return (
-        <main className="py-6 px-30 bg-white min-h-screen w-full h-full flex justify-center">
+        <main className="py-6 px-10 bg-white min-h-screen w-full h-full flex justify-center">
             <div className="w-full grid grid-cols-[55%_40%] gap-[5%] items-center">
 
                 <div className="grid grid-rows-[auto_1fr] gap-10 px-20 py-24 text-black self-center">
@@ -14,13 +14,13 @@ export default function RegisterPage() {
                     <div className="flex flex-col gap-8">
                         <form action="" className="flex flex-col gap-2">
                             <label htmlFor="name" className="text-lg font-bold">Nombre <span className="text-red-500">*</span></label>
-                            <input id="name" type="text" name="name" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Tu nombre completo" required/>
+                            <input id="name" type="text" name="name" className="border border-gray-300 rounded-xl h-10 pl-4" placeholder="Tu nombre completo" required/>
 
                             <label htmlFor="email" className="text-lg font-bold">Email <span className="text-red-500">*</span></label>
-                            <input id="email" type="email" name="email" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Ingresa tu correo" required/>
+                            <input id="email" type="email" name="email" className="border border-gray-300 rounded-xl h-10 pl-4" placeholder="Ingresa tu correo" required/>
 
                             <label htmlFor="password" className="text-lg font-bold">Contraseña <span className="text-red-500">*</span></label>
-                            <input id="password" type="password" name="password" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Crea una contraseña" required/>
+                            <input id="password" type="password" name="password" className="border border-gray-300 rounded-xl h-10 pl-4" placeholder="Crea una contraseña" required/>
 
                             <input type="submit" value="Crear cuenta" className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02]"/>
                         </form>
@@ -31,7 +31,7 @@ export default function RegisterPage() {
                     </div>
                 </div>
 
-                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[linear-gradient(309deg,#9cceff,#5B6AEB,#001f5d)] bg-[length:600%_600%] animate-custom-gradient">
+                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[url('/gifs/auth.gif')] bg-no-repeat">
                     <div className="flex flex-col gap-3.5 text-white">
                         <h3 className="text-xl font-light">Con nosotros</h3>
                         <h2 className="text-3xl font-bold">Mejoras cada día</h2>

@@ -10,6 +10,7 @@
   --background-upload: #E1E5FD;
   --background-upload-hover: #D0D3DD;
   --out-border: #000000;
+  --button: #1E1F35;
 }
 
 .dark {
@@ -34,6 +35,7 @@
   --color-background-upload: var(--background-upload);
   --color-background-upload-hover: var(--background-upload-hover);
   --color-out-border: var(--out-border);
+  --color-button:var(--button)
 }
 
 body {
