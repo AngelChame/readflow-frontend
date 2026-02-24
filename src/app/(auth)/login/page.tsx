@@ -4,7 +4,7 @@ export default function LoginPage() {
     return (
         <main className="py-6 px-10 bg-white min-h-screen w-full h-full flex justify-center">
             <div className="w-full grid grid-cols-[40%_55%] gap-[5%]">
-                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[url('/gifs/auth8.gif')] bg-no-repeat">
+                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[url('/gifs/auth.gif')] bg-no-repeat">
                     <div className="flex flex-col gap-3.5 text-white">
                         <h3 className="text-xl font-light">Con nosotros</h3>
                         <h2 className="text-3xl font-bold">Mejoras cada día</h2>
