@@ -25,7 +25,7 @@ export default function SummaryPage() {
               </p>
           </div>
           <div className="flex w-full justify-end-safe">
-              <button className="bg-blue-950 text-white py-4 px-16 rounded-2xl">Realizar evaluacion</button>
+              <button className="bg-[#1E1F35] text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</button>
           </div>
       </main>
   );
