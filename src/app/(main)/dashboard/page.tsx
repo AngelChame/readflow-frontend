@@ -1,7 +1,11 @@
+"use client";
+
+import DropZone from "@/components/molecules/DropZone";
+
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full">
+    <div className="grid grid-rows-[64%_33%] gap-4 h-full">
+      <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-base font-medium text-foreground">
@@ -28,35 +32,35 @@ export default function DashboardPage() {
             <option>Difícil</option>
           </select>
         </div>
-
         <div className="flex items-center justify-center">
-          <div className="flex items-center justify-center h-40 w-1/2 bg-background-upload rounded-xl border-2 border-dashed border-black relative overflow-hidden">
-            <span className="text-slate-400 text-sm font-medium">
-              Subida de documentos pendiente...
-            </span>
-          </div>
+          <DropZone />
+        </div>
+        <div className="flex items-center justify-center">
+          <input type="submit" value="Generar" className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02]" />
         </div>
       </div>
-      <div className="flex gap-4">
-        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-3/4 h-65">
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-full">
+        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm md:col-span-3 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-base font-medium text-foreground">
                 Análisis semanal
               </h3>
             </div>
+          </div>
         </div>
-        </div> 
-        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-1/4 h-65">
+
+        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm md:col-span-1 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-base font-medium text-foreground">
                 Días en racha
               </h3>
             </div>
+          </div>
         </div>
-        </div> 
-      </div> 
+      </div>
     </div>
   );
 }
