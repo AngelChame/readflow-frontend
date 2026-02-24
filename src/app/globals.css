@@ -9,6 +9,7 @@
   --border-secondary: #000000;
   --background-upload: #E1E5FD;
   --background-upload-hover: #D0D3DD;
+  --out-border: #000000;
 }
 
 .dark {
@@ -20,6 +21,7 @@
   --border-secondary: #ffffff;
   --background-upload: #191C26;
   --background-upload-hover: #2a2a2a;
+  --out-border: #ffffff;
 }
 
 @theme {
@@ -31,7 +33,7 @@
   --color-border-secondary: var(--border-secondary);
   --color-background-upload: var(--background-upload);
   --color-background-upload-hover: var(--background-upload-hover);
-
+  --color-out-border: var(--out-border);
 }
 
 body {
