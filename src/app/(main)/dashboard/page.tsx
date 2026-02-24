@@ -1,6 +1,7 @@
 "use client";
 
 import DropZone from "@/components/molecules/DropZone";
+import StreakCard from "@/components/molecules/StreakCard";
 
 export default function DashboardPage() {
   return (
@@ -51,14 +52,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm md:col-span-1 h-full overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-base font-medium text-foreground">
-                Días en racha
-              </h3>
-            </div>
-          </div>
+        <div className="md:col-span-1 h-full">
+          <StreakCard streak={3} />
         </div>
       </div>
     </div>
