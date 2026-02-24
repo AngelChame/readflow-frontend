@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function SummaryPage() {
   return (
       <main className="flex flex-col justify-between h-full p-10 bg-white rounded-2xl gap-8">
@@ -25,7 +27,7 @@ export default function SummaryPage() {
               </p>
           </div>
           <div className="flex w-full justify-end-safe">
-              <button className="bg-[#1E1F35] text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</button>
+              <Link href="/session/test/test" className="bg-[#1E1F35] text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</Link>
           </div>
       </main>
   );
