@@ -8,6 +8,7 @@
   --border: #f3f4f6;
   --border-secondary: #000000;
   --background-upload: #E1E5FD;
+    --button: #1E1F35;
 }
 
 .dark {
@@ -28,6 +29,7 @@
   --color-border: var(--border);
   --color-border-secondary: var(--border-secondary);
   --color-background-upload: var(--background-upload);
+    --color-button:var(--button)
 }
 
 body {
