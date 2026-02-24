@@ -30,7 +30,9 @@ export default function Sidebar() {
         </Link>
       </nav>
 
-      <ThemeToggle />
+      <div className="flex justify-center">
+        <ThemeToggle />
+      </div>
 
       <div className="mt-auto pt-4">
         <Link href="/login" className="flex items-center gap-3 p-2 text-foreground hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg font-base transition-colors group">

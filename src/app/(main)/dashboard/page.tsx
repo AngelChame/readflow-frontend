@@ -16,7 +16,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex items-center gap-8 justify-center mb-6">
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground outline-none">
+          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
             <option value="" disabled>
               Selecciona el tipo de resumen
             </option>
@@ -24,7 +24,7 @@ export default function DashboardPage() {
             <option>Resumen intermedio</option>
             <option>Resumen difícil</option>
           </select>
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground outline-none">
+          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
             <option value="" disabled>
               Seleccione dificultad de la evaluación
             </option>
