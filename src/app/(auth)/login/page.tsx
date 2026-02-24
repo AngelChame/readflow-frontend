@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function LoginPage() {
     return (
-        <main className="py-6 px-30 bg-white min-h-screen w-full h-full flex justify-center">
+        <main className="py-6 px-10 bg-white min-h-screen w-full h-full flex justify-center">
             <div className="w-full grid grid-cols-[40%_55%] gap-[5%]">
-                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[linear-gradient(309deg,#9cceff,#00339b,#001f5d)] bg-[length:600%_600%] animate-custom-gradient">
+                <div className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 bg-[url('/gifs/auth8.gif')] bg-no-repeat">
                     <div className="flex flex-col gap-3.5 text-white">
                         <h3 className="text-xl font-light">Con nosotros</h3>
                         <h2 className="text-3xl font-bold">Mejoras cada día</h2>
@@ -23,10 +23,10 @@ export default function LoginPage() {
                     <div className="flex flex-col gap-8">
                         <form action="" className="flex flex-col gap-2">
                             <label htmlFor="email" className="text-lg font-bold">Email <span className="text-red-500">*</span></label>
-                            <input id="email" type="email" name="email" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Ingresa tu correo" required/>
+                            <input id="email" type="email" name="email" className="border border-gray-300 rounded-xl h-10 pl-4" placeholder="Ingresa tu correo" required/>
 
                             <label htmlFor="password" className="text-lg font-bold">Contraseña <span className="text-red-500">*</span></label>
-                            <input id="password" type="password" name="password" className="border border-gray-500 rounded-xl h-10 pl-4" placeholder="Ingresa tu contraseña" required/>
+                            <input id="password" type="password" name="password" className="border border-gray-300 rounded-xl h-10 pl-4" placeholder="Ingresa tu contraseña" required/>
 
                             <input type="submit" value="Iniciar sesión" className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02]"/>
                         </form>
