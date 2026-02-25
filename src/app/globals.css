@@ -10,7 +10,8 @@
   --background-upload: #E1E5FD;
   --background-upload-hover: #D0D3DD;
   --out-border: #000000;
-  --button: #1E1F35;
+  --summary-button: #1E1F35;
+    --main-purple:#5B6AEB;
 }
 
 .dark {
@@ -23,6 +24,8 @@
   --background-upload: #191C26;
   --background-upload-hover: #2a2a2a;
   --out-border: #ffffff;
+    --summary-button: #33345c;
+    --main-purple:#5B6AEB;
 }
 
 @theme {
@@ -35,13 +38,14 @@
   --color-background-upload: var(--background-upload);
   --color-background-upload-hover: var(--background-upload-hover);
   --color-out-border: var(--out-border);
-  --color-button:var(--button)
+  --color-summary-button:var(--summary-button);
+    --color-main-purple:var(--main-purple);
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   transition: background-color 0.2s, color 0.2s;
 }
 
