@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function SummaryPage() {
   return (
-      <main className="flex flex-col justify-between h-full p-10 bg-white rounded-2xl gap-8">
+      <main className="flex flex-col justify-between h-full p-10 bg-background-secondary rounded-2xl gap-8">
           <div className="text-4xl font-bold">Titulo</div>
           <div className="overflow-auto">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero diam, luctus ut vehicula quis, gravida vel sapien. Sed ultrices bibendum magna vel placerat. Sed et gravida tortor. Sed sodales tortor in massa sollicitudin, non faucibus erat semper. Cras non lacus sollicitudin, sollicitudin arcu vel, vestibulum turpis. Aenean turpis eros, aliquet sed sodales a, ornare ac est. Vivamus id nulla nulla. Ut interdum aliquet lacus, eget accumsan dolor ornare id. Nunc vitae massa at nulla porta mollis ut nec nisi. Cras sit amet elit condimentum, sagittis nisl ut, accumsan erat. Fusce vestibulum quam sed nunc tempor facilisis. Aliquam vehicula, lacus vel pharetra commodo, mauris diam scelerisque orci, sed egestas quam orci eget ante. Ut facilisis nulla eu tortor ornare faucibus.
+              <p className="text-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero diam, luctus ut vehicula quis, gravida vel sapien. Sed ultrices bibendum magna vel placerat. Sed et gravida tortor. Sed sodales tortor in massa sollicitudin, non faucibus erat semper. Cras non lacus sollicitudin, sollicitudin arcu vel, vestibulum turpis. Aenean turpis eros, aliquet sed sodales a, ornare ac est. Vivamus id nulla nulla. Ut interdum aliquet lacus, eget accumsan dolor ornare id. Nunc vitae massa at nulla porta mollis ut nec nisi. Cras sit amet elit condimentum, sagittis nisl ut, accumsan erat. Fusce vestibulum quam sed nunc tempor facilisis. Aliquam vehicula, lacus vel pharetra commodo, mauris diam scelerisque orci, sed egestas quam orci eget ante. Ut facilisis nulla eu tortor ornare faucibus.
 
                   Fusce tempor nulla nec aliquam pellentesque. Vivamus pulvinar lectus non diam elementum ullamcorper. Etiam semper, elit ac viverra congue, urna ligula euismod metus, quis malesuada risus turpis sit amet mauris. Nunc eget vehicula libero. Suspendisse aliquet ipsum non enim dapibus, in congue arcu ultrices. Duis nec maximus augue, sed facilisis eros. Vestibulum commodo ante sit amet sem pharetra vehicula at in justo. Donec lacus sapien, consectetur ornare efficitur sed, gravida nec purus. Vivamus et sodales orci. Vestibulum laoreet mauris fringilla egestas efficitur. Sed lobortis, felis eget pretium pellentesque, orci tortor gravida ipsum, nec maximus orci libero et est. Ut at ante efficitur, imperdiet tellus id, semper purus. Donec porttitor velit sapien, eget egestas leo egestas vitae. Maecenas gravida ipsum sit amet blandit pretium.
 
@@ -27,7 +27,7 @@ export default function SummaryPage() {
               </p>
           </div>
           <div className="flex w-full justify-end-safe">
-              <Link href="/session/test/test" className="bg-[#1E1F35] text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</Link>
+              <Link href="/session/test/test" className="bg-summary-button text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</Link>
           </div>
       </main>
   );

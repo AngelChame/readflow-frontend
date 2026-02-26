@@ -10,7 +10,7 @@ export default function Header() {
   const getDynamicTitle = () => {
     // Usamos expresiones regulares o simplemente verificamos el final de la ruta
     if (pathname.endsWith("/summary")) return "Resumen";
-    if (pathname.endsWith("/test")) return "Evaluación";
+    if (pathname.endsWith("/test")) return "Test";
 
     // Diccionario para rutas estáticas
     const pageTitles: Record<string, string> = {
