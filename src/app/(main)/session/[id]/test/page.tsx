@@ -1,73 +1,134 @@
 'use client';
-import {useEffect, useState} from "react";
-import {navigate} from "next/dist/client/components/segment-cache/navigation";
 
-const testType = 'Clasico';
-const summaryTitle = 'La ansiedad';
+import {useState} from "react";
 
-interface Question {
-    id: number;
-    pregunta: string;
-    opciones: string[];
-    correcta: string;
-}
-
-//preguntas de ejemplo, se reemplaza al terminar API
-const fetchPreguntas = async (): Promise<Question[]> => {
-    return [
-        { id: 1, pregunta: "¿Cuál es la capital de Francia?", opciones: ["Madrid", "París", "Roma", "Berlín"], correcta: "París" },
-        { id: 2, pregunta: "¿Cuánto es 8 × 7?", opciones: ["54", "56", "58", "64"], correcta: "56" },
-        { id: 3, pregunta: "¿En qué año llegó el hombre a la Luna?", opciones: ["1965", "1967", "1969", "1971"], correcta: "1969" },
-        { id: 4, pregunta: "¿Cuál es el elemento más abundante en la atmósfera?", opciones: ["Oxígeno", "Argón", "Nitrógeno", "CO₂"], correcta: "Nitrógeno" },
-        { id: 5, pregunta: "¿Quién escribió 'Cien años de soledad'?", opciones: ["Vargas Llosa", "Borges", "Cortázar", "García Márquez"], correcta: "García Márquez" },
-        { id: 6, pregunta: "¿Cuál es el planeta más grande del sistema solar?", opciones: ["Saturno", "Júpiter", "Neptuno", "Urano"], correcta: "Júpiter" },
-        { id: 7, pregunta: "¿Cuántos lados tiene un hexágono?", opciones: ["5", "6", "7", "8"], correcta: "6" },
-        { id: 8, pregunta: "¿Cuál es el océano más grande del mundo?", opciones: ["Atlántico", "Índico", "Ártico", "Pacífico"], correcta: "Pacífico" },
-        { id: 9, pregunta: "¿Cuál es el símbolo químico del oro?", opciones: ["Go", "Ag", "Au", "Or"], correcta: "Au" },
-        { id: 10, pregunta: "¿En qué continente está Brasil?", opciones: ["África", "Asia", "América del Sur", "Oceanía"], correcta: "América del Sur" },
-    ];
+const mockQuizData = {
+    quizType: "classic",
+    title: "APIs REST",
+    questions: [
+        {
+            question: "¿Qué es una API según el documento?",
+            options: [
+                "Un tipo de base de datos",
+                "Un conjunto de reglas y protocolos para la comunicación entre aplicaciones",
+                "Un programa de diseño gráfico",
+                "Un sistema operativo",
+            ],
+            correct_answer: 1,
+            explanation:
+                "El documento define una API como 'un conjunto de reglas y protocolos que permite a diferentes aplicaciones de software comunicarse e intercambiar datos entre sí'.",
+        },
+        {
+            question: "¿Cuál es la función principal de una API?",
+            options: [
+                "Crear aplicaciones desde cero",
+                "Diseñar interfaces de usuario",
+                "Actuar como intermediario para integrar funcionalidades",
+                "Gestionar el almacenamiento de datos",
+            ],
+            correct_answer: 2,
+            explanation:
+                "La API 'actúa como un intermediario que facilita la integración de funcionalidades... sin necesidad de crearlas desde cero'.",
+        },
+        {
+            question: "¿En qué formato se suele devolver una respuesta de la API?",
+            options: [
+                "Solo en formato de texto plano",
+                "En formato MP3 o WAV",
+                "Generalmente en formato JSON o XML",
+                "En formato PDF",
+            ],
+            correct_answer: 2,
+            explanation:
+                "El texto menciona que la API devuelve una respuesta 'generalmente en formato JSON o XML'.",
+        },
+        {
+            question: "¿Qué se compara la estructura de una API?",
+            options: [
+                "Una receta de cocina",
+                "Un 'contrato' entre dos aplicaciones",
+                "Un mapa de carreteras",
+                "Un libro de instrucciones",
+            ],
+            correct_answer: 1,
+            explanation:
+                "La estructura de las APIs se compara con un 'contrato' entre dos aplicaciones, definiendo cómo deben interactuar.",
+        },
+        {
+            question: "¿Cuál es uno de los beneficios de usar APIs mencionado en el texto?",
+            options: [
+                "Aumentar la complejidad del desarrollo",
+                "Reducir la eficiencia",
+                "Ahorrar tiempo y costos de desarrollo",
+                "Limitar la seguridad",
+            ],
+            correct_answer: 2,
+            explanation:
+                "El documento lista como beneficio 'Ahorran tiempo y costos de desarrollo, aumentan la eficiencia, mejoran la seguridad y permiten la automatización'.",
+        },
+    ],
 };
 
 export default function TestPage() {
+    const {title, questions} = mockQuizData;
+    const total = questions.length;
 
-    const [questions, setQuestions] = useState<Question[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [answers, setAnswers] = useState<Record<number, string>>([]);
+    const [current, setCurrent] = useState(0);
+    const [answers, setAnswers] = useState<Record<number, number>>({});
+    const [submitted, setSubmitted] = useState(false);
     const [finished, setFinished] = useState(false);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchPreguntas().then((data) => {
-            setQuestions(data);
-            setLoading(false);
-        });
-    }, []);
+    const q = questions[current];
+    const selected = answers[current];
+    const hasAnswer = selected != undefined;
 
-    const currentQuestion = questions[currentIndex];
-    const isLast = currentIndex === questions.length - 1;
-    const selectedAnswer = answers[currentIndex];
-
-    const navigate = (direction: number)=> {
-        setTimeout(() =>{
-            setCurrentIndex((prev) => prev + direction);
-        }, 200);
-    }
+    const handleSelect = (i: number) => {
+        if (submitted) return;
+        setAnswers((prev) => ({...prev, [current]: i}));
+    };
 
     const handleNext = () => {
-        if (isLast) {
-            setTimeout(() => {
-                setFinished(true);
-            }, 200)
+        if (!submitted) {
+            if (!hasAnswer) return;
+            setSubmitted(true);
+            return;
+        }
+        setFinished(false);
+        if (current + 1 < total) {
+            setCurrent((c: number) => c + 1);
         } else {
-            navigate(1);
+            setFinished(true);
         }
     }
 
-    const letters = ['A', 'B', 'C', 'D'];
+    const handleBack = () => {
+        if (submitted) {
+            setSubmitted(false);
+            return
+        }
+        if (current > 0) {
+            setCurrent((c:number) => c - 1);
+            setSubmitted(false);
+        }
+    }
 
-    return(
-        <div className="bg-background-secondary h-full w-full rounded-2xl flex flex-col gap-4 px-20 py-10">
-            <h2 className="text-foreground text-3xl font-medium">{summaryTitle}</h2>
-            <h4 className="text-foreground text-xl font-light">Pregunta {currentIndex + 1} de {questions.length}</h4>
-        </div>
-    )};
+    const handleRestart = () => {
+        setAnswers({});
+        setCurrent(0);
+        setSubmitted(false);
+        setFinished(false);
+    }
+
+    const getOptionState = (i: number) => {
+        if (!submitted) return selected === 1 ? 'selected' : 'idle';
+        if (i === q.correct_answer) return 'correct';
+        if (selected === i) return 'wrong';
+        return 'idle';
+    }
+
+    const score = questions.reduce(
+        (acc, q, i) => acc + (answers[i] === q.correct_answer ? 1 : 0),
+        0
+    );
+
+}
