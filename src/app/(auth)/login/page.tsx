@@ -11,8 +11,9 @@ export default function LoginPage() {
                         <h3 className="text-xl font-light">Con nosotros</h3>
                         <h2 className="text-3xl font-bold">Mejoras cada día</h2>
                     </div>
-                    <div className="flex justify-center text-white z-10">
-                        <h2 className="text-3xl font-bold">ReadFlow</h2>
+                    <div className="flex flex-col items-center  gap-6 w-full h-fit text-white z-10">
+                        <h2 className="text-4xl font-bold">ReadFlow</h2>
+                        <img src="/logo/logo.svg" alt="" className="z-10 w-16"/>
                     </div>
                 </BubbleBackground>
 
