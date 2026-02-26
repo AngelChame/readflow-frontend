@@ -1,7 +1,4 @@
 @import "tailwindcss";
-/* ---break---*/
-@plugin "tailwindcss-animate";
-/* ---break---*/
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -48,7 +45,7 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
+  --background: oklch(0 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --background-secondary: #1a1a1a;
   --hover: #2a2a2a;
