@@ -3,16 +3,16 @@
 
 :root {
   --background-secondary: #ffffff;
-  --hover: #EAEAEA;
+  --hover: #eaeaea;
   --border: oklch(0.929 0.013 255.508);
   --border-secondary: #000000;
-  --background-upload: #E1E5FD;
-  --background-upload-hover: #D0D3DD;
+  --background-upload: #e1e5fd;
+  --background-upload-hover: #d0d3dd;
   --out-border: #000000;
-  --summary-button: #1E1F35;
-  --main-purple: #5B6AEB;
+  --summary-button: #1e1f35;
+  --main-purple: #5b6aeb;
   --radius: 0.625rem;
-  --background: #EAEAEA;
+  --background: #eaeaea;
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
@@ -51,11 +51,11 @@
   --hover: #2a2a2a;
   --border: oklch(1 0 0 / 10%);
   --border-secondary: #ffffff;
-  --background-upload: #191C26;
+  --background-upload: #191c26;
   --background-upload-hover: #2a2a2a;
   --out-border: #ffffff;
   --summary-button: #33345c;
-  --main-purple: #5B6AEB;
+  --main-purple: #5b6aeb;
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
@@ -100,22 +100,27 @@
   --color-main-purple: var(--main-purple);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 /* para fondo en movimiento del login y el registro*/
 @keyframes moveGradient {
-
   0%,
   100% {
-    background-position: 0% 50%
+    background-position: 0% 50%;
   }
 
   50% {
-    background-position: 100% 50%
+    background-position: 100% 50%;
   }
 }
 
