@@ -8,7 +8,7 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
     name: z.string().min(3, "Minimo 3 caracteres"),
     email: z.email("Email invalido"),
-    password: z.string().min(8, "Minimo 8 caracteres"),
+    password: z.string().min(8, "Minimo 8 caracteres").regex(/[A-Z]/, "Debe contener al menos una mayúscula").regex(/[0-9]/, "Debe contener al menos un número")
 })
 
 export type LoginSchema = z.infer<typeof loginSchema>;
