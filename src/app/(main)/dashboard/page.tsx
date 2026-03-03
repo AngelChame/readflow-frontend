@@ -2,6 +2,7 @@
 
 import DropZone from "@/components/molecules/DropZone";
 import StreakCard from "@/components/molecules/StreakCard";
+import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
 
 export default function DashboardPage() {
   return (
@@ -42,13 +43,16 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-full">
-        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm md:col-span-3 h-full overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm md:col-span-3 h-full overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between mb-4 shrink-0">
             <div>
               <h3 className="text-base font-medium text-foreground">
                 Análisis semanal
               </h3>
             </div>
+          </div>
+          <div className="flex-1 min-h-0">
+            <WeeklyProgressChart />
           </div>
         </div>
 
