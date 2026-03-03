@@ -1,7 +1,17 @@
 import {apiFetch} from "@/services/api.service";
 
 export const getQuizService = async (quizId: number) => {
-    return apiFetch(`/study-session/${quizId}/quiz`, {})
+    const data = await apiFetch(`/study-session/${quizId}/quiz`, {})
+
+    if (data.quiz) {
+        return {
+            ...data,
+            quizData: data.quiz,
+            quiz: undefined
+        }
+    }
+
+    return data
 }
 
 // Quiz 1

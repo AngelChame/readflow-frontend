@@ -19,7 +19,7 @@ export const apiFetch = async (endpoint: string, options?: RequestInit) => {
 
     if (res.status === 401) {
         window.location.href = '/login?reason=session_expired'
-        return
+        throw new ApiError(401, 'No autorizado')
     }
 
     if (!res.ok) {
