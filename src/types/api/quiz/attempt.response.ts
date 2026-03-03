@@ -51,11 +51,10 @@ interface EssayEvaluationResult {
     feedback: string
 }
 
-interface WritingFeedback {
+interface WritingFeedback extends EssayEvaluationResult {
     score: number
     maxPossibleScore: number
     passed: boolean
-    aiFeedback: EssayEvaluationResult
 }
 
 // Evaluaciones completas/armadas

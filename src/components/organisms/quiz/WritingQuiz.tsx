@@ -10,7 +10,7 @@ interface Props {
     data: WritingQuizResponse
 }
 
-const MIN_CHARS = 50
+const MIN_CHARS = 150
 
 export default function WritingQuiz({ data }: Props) {
     const router = useRouter()
@@ -30,6 +30,7 @@ export default function WritingQuiz({ data }: Props) {
         setError(null)
         try {
             const response = await submitWritingService(studySession.id, text.trim())
+            console.log('Writing response:', JSON.stringify(response, null, 2)) // ← agrega esto
             setResult(response)
             setFinished(true)
         } catch {
@@ -39,110 +40,109 @@ export default function WritingQuiz({ data }: Props) {
         }
     }
 
+    // Vista de resultados
     if (finished && result) {
         const { attempt, feedback } = result
-        const { aiFeedback } = feedback
         const passed = feedback.passed
 
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-                <div className="w-full max-w-2xl bg-white rounded-2xl p-8 shadow-sm space-y-6">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">
-                            {passed ? '¡Bien hecho!' : 'Sigue practicando'}
-                        </h1>
-                        <p className="text-gray-500 mt-1">
-                            Identificaste {aiFeedback.concepts_found.length} de {criteria.required_concepts.length} conceptos clave
-                        </p>
+            <div className="w-full h-full bg-background-secondary rounded-2xl p-8 shadow-sm space-y-8">
+                <div>
+                    <h1 className="text-2xl font-bold text-foreground">
+                        {passed ? '¡Bien hecho!' : 'Sigue practicando'}
+                    </h1>
+                    <p className="text-muted-foreground mt-1">
+                        Identificaste {feedback.concepts_found.length} de {criteria.required_concepts.length} conceptos clave
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-border bg-background p-4 text-center">
+                        <p className="text-3xl font-bold text-green-500">{feedback.concepts_found.length}</p>
+                        <p className="text-sm text-muted-foreground mt-1">Conceptos encontrados</p>
                     </div>
+                    <div className="rounded-xl border border-border bg-background p-4 text-center">
+                        <p className="text-3xl font-bold text-red-400">{feedback.concepts_missing.length}</p>
+                        <p className="text-sm text-muted-foreground mt-1">Conceptos faltantes</p>
+                    </div>
+                </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 text-center">
-                            <p className="text-3xl font-bold text-green-500">{aiFeedback.concepts_found.length}</p>
-                            <p className="text-sm text-gray-500 mt-1">Conceptos encontrados</p>
-                        </div>
-                        <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 text-center">
-                            <p className="text-3xl font-bold text-red-400">{aiFeedback.concepts_missing.length}</p>
-                            <p className="text-sm text-gray-500 mt-1">Conceptos faltantes</p>
+                {feedback.concepts_found.length > 0 && (
+                    <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">Conceptos identificados</p>
+                        <div className="flex flex-wrap gap-2">
+                            {feedback.concepts_found.map((concept, i) => (
+                                <span
+                                    key={i}
+                                    className="px-3 py-1 rounded-full text-sm bg-green-500/10 border border-green-500/30 text-green-500">
+                                    {concept}
+                                </span>
+                            ))}
                         </div>
                     </div>
+                )}
 
-                    {aiFeedback.concepts_found.length > 0 && (
-                        <div className="space-y-2">
-                            <p className="text-sm font-semibold text-gray-700">Conceptos identificados</p>
-                            <div className="flex flex-wrap gap-2">
-                                {aiFeedback.concepts_found.map((concept, i) => (
-                                    <span
-                                        key={i}
-                                        className="px-3 py-1 rounded-full text-sm bg-green-50 border border-green-200 text-green-700">
-                                        {concept}
-                                    </span>
-                                ))}
-                            </div>
+                {feedback.concepts_missing.length > 0 && (
+                    <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">Conceptos que faltaron</p>
+                        <div className="flex flex-wrap gap-2">
+                            {feedback.concepts_missing.map((concept, i) => (
+                                <span
+                                    key={i}
+                                    className="px-3 py-1 rounded-full text-sm bg-red-500/10 border border-red-500/30 text-red-400">
+                                    {concept}
+                                </span>
+                            ))}
                         </div>
-                    )}
-
-                    {aiFeedback.concepts_missing.length > 0 && (
-                        <div className="space-y-2">
-                            <p className="text-sm font-semibold text-gray-700">Conceptos que faltaron</p>
-                            <div className="flex flex-wrap gap-2">
-                                {aiFeedback.concepts_missing.map((concept, i) => (
-                                    <span
-                                        key={i}
-                                        className="px-3 py-1 rounded-full text-sm bg-red-50 border border-red-200 text-red-600">
-                                        {concept}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {aiFeedback.relationships_identified.length > 0 && (
-                        <div className="space-y-2">
-                            <p className="text-sm font-semibold text-gray-700">Relaciones identificadas</p>
-                            <ul className="space-y-1">
-                                {aiFeedback.relationships_identified.map((rel, i) => (
-                                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                                        <span className="text-green-500 mt-0.5">✓</span>
-                                        {rel}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    <div className="rounded-xl bg-gray-50 border border-gray-100 p-4">
-                        <p className="text-sm font-semibold text-gray-700 mb-1">Retroalimentación</p>
-                        <p className="text-sm text-gray-600 leading-relaxed">{aiFeedback.feedback}</p>
                     </div>
+                )}
 
-                    {attempt.iriValue !== null && (
-                        <div className="rounded-xl border border-indigo-100 bg-indigo-50 p-4 text-center">
-                            <p className="text-sm text-indigo-500">Índice de Retención (IRI)</p>
-                            <p className="text-3xl font-bold text-indigo-700 mt-1">{attempt.iriValue}%</p>
-                        </div>
-                    )}
-
-                    <div className="flex justify-end">
-                        <button
-                            onClick={() => router.push(`/session/${studySession.id}/summary`)}
-                            className="bg-gray-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors">
-                            Volver al resumen
-                        </button>
+                {feedback.relationships_identified.length > 0 && (
+                    <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">Relaciones identificadas</p>
+                        <ul className="space-y-1">
+                            {feedback.relationships_identified.map((rel, i) => (
+                                <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                                    <span className="text-green-500 mt-0.5">✓</span>
+                                    {rel}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
+                )}
+
+                <div className="rounded-xl bg-background border border-border p-4">
+                    <p className="text-sm font-semibold text-foreground mb-1">Retroalimentación</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feedback.feedback}</p>
+                </div>
+
+                {attempt.iriValue !== null && (
+                    <div className="rounded-xl border border-main-purple/30 bg-main-purple/10 p-4 text-center">
+                        <p className="text-sm text-main-purple">Índice de Retención (IRI)</p>
+                        <p className="text-3xl font-bold text-main-purple mt-1">{attempt.iriValue}%</p>
+                    </div>
+                )}
+
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => router.push(`/session/${studySession.id}/summary`)}
+                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        Volver al resumen
+                    </button>
                 </div>
             </div>
         )
     }
 
+    // Vista de quiz
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-            <div className="w-full max-w-2xl bg-white rounded-2xl p-8 shadow-sm space-y-6">
+        <div className="w-full h-full bg-background-secondary flex items-center justify-center rounded-2xl px-40">
+            <div className="w-full space-y-6 py-8">
 
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">{studySession.title}</h1>
-                    <p className="text-sm text-gray-500 mt-1">
-                        <span className="font-semibold">Instrucciones:</span> Redacta un texto de lo aprendido
+                    <h1 className="text-2xl font-bold text-foreground">{studySession.title}</h1>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        <span className="font-semibold text-foreground">Instrucciones:</span> Redacta un texto de lo aprendido
                     </p>
                 </div>
 
@@ -151,9 +151,9 @@ export default function WritingQuiz({ data }: Props) {
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Entendí esto del tema porque...."
                     rows={8}
-                    className="w-full rounded-xl bg-gray-50 border border-gray-100 px-5 py-4 text-sm text-gray-800 placeholder-gray-400 resize-none focus:outline-none focus:border-gray-300 transition-colors"/>
+                    className="w-full rounded-xl bg-background border border-border px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:border-border-secondary transition-colors"/>
 
-                <p className={`text-xs text-right ${canSubmit ? 'text-gray-400' : 'text-gray-300'}`}>
+                <p className={`text-xs text-right ${canSubmit ? 'text-muted-foreground' : 'text-muted-foreground/40'}`}>
                     {text.trim().length} caracteres {!canSubmit && `(mínimo ${MIN_CHARS})`}
                 </p>
 
@@ -163,7 +163,7 @@ export default function WritingQuiz({ data }: Props) {
                     <button
                         onClick={handleSubmit}
                         disabled={!canSubmit || loading}
-                        className="bg-gray-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-800 disabled:opacity-30 transition-colors">
+                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity">
                         {loading ? 'Enviando...' : 'Enviar'}
                     </button>
                 </div>

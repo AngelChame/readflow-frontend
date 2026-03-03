@@ -1,8 +1,6 @@
 import {apiFetch} from "@/services/api.service";
 
-const quizId = 3;
-
-export const getQuizService = async () => {
+export const getQuizService = async (quizId: number) => {
     return apiFetch(`/study-session/${quizId}/quiz`, {})
 }
 
