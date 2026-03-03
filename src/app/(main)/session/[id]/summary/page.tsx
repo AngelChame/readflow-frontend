@@ -1,34 +1,49 @@
+'use client'
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { getQuizService } from "@/services/quiz.service";
 
 export default function SummaryPage() {
-  return (
-      <main className="flex flex-col justify-between h-full p-10 bg-background-secondary rounded-2xl gap-8">
-          <div className="text-4xl font-bold">Titulo</div>
-          <div className="overflow-auto">
-              <p className="text-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero diam, luctus ut vehicula quis, gravida vel sapien. Sed ultrices bibendum magna vel placerat. Sed et gravida tortor. Sed sodales tortor in massa sollicitudin, non faucibus erat semper. Cras non lacus sollicitudin, sollicitudin arcu vel, vestibulum turpis. Aenean turpis eros, aliquet sed sodales a, ornare ac est. Vivamus id nulla nulla. Ut interdum aliquet lacus, eget accumsan dolor ornare id. Nunc vitae massa at nulla porta mollis ut nec nisi. Cras sit amet elit condimentum, sagittis nisl ut, accumsan erat. Fusce vestibulum quam sed nunc tempor facilisis. Aliquam vehicula, lacus vel pharetra commodo, mauris diam scelerisque orci, sed egestas quam orci eget ante. Ut facilisis nulla eu tortor ornare faucibus.
+    const { id } = useParams()
+    const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
+    const [loading, setLoading] = useState(true)
 
-                  Fusce tempor nulla nec aliquam pellentesque. Vivamus pulvinar lectus non diam elementum ullamcorper. Etiam semper, elit ac viverra congue, urna ligula euismod metus, quis malesuada risus turpis sit amet mauris. Nunc eget vehicula libero. Suspendisse aliquet ipsum non enim dapibus, in congue arcu ultrices. Duis nec maximus augue, sed facilisis eros. Vestibulum commodo ante sit amet sem pharetra vehicula at in justo. Donec lacus sapien, consectetur ornare efficitur sed, gravida nec purus. Vivamus et sodales orci. Vestibulum laoreet mauris fringilla egestas efficitur. Sed lobortis, felis eget pretium pellentesque, orci tortor gravida ipsum, nec maximus orci libero et est. Ut at ante efficitur, imperdiet tellus id, semper purus. Donec porttitor velit sapien, eget egestas leo egestas vitae. Maecenas gravida ipsum sit amet blandit pretium.
+    useEffect(() => {
+        const fetchSummary = async () => {
+            try {
+                const data = await getQuizService(Number(id))
+                setTitle(data.studySession.title)
+                setSummary(data.studySession.summaryBody)
+            } catch {
+            } finally {
+                setLoading(false)
+            }
+        }
 
-                  Sed at justo gravida, pellentesque risus non, bibendum neque. Duis viverra nunc elit, ac euismod mauris venenatis sit amet. Mauris accumsan non lorem id ullamcorper. Curabitur sollicitudin quis purus in aliquet. Vivamus elit lectus, gravida ac convallis ullamcorper, gravida in nisi. In vitae leo eleifend, condimentum ipsum at, ornare nulla. Vestibulum ipsum nulla, dictum et vestibulum a, accumsan id ipsum. Nam tempus leo metus, quis feugiat lectus rhoncus ac. Maecenas eget tellus sit amet purus tincidunt dictum. Sed interdum consectetur porta. Mauris eget condimentum mauris.
+        fetchSummary()
+    }, [id])
 
-                  Aenean justo nibh, blandit ac tempus elementum, convallis at leo. Ut cursus sit amet est at aliquam. Ut cursus vehicula sem non faucibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras mattis nulla quis justo iaculis pharetra. Quisque a sapien nec ex sodales porta ac et neque. Donec sed venenatis nunc. Nulla ac justo in lectus fringilla fringilla.
-
-                  Vivamus vulputate eleifend ligula nec varius. Phasellus convallis est id quam commodo, et ultrices nisi volutpat. Ut laoreet fringilla euismod. Nam vel lorem porta, rhoncus est id, placerat lorem. Donec condimentum, tortor id venenatis condimentum, magna magna ullamcorper neque, sed congue dui est id est. Morbi placerat, nibh sit amet feugiat ornare, odio nulla pharetra nunc, eu accumsan nisi velit in mi. Vivamus facilisis quam in tellus eleifend luctus. Sed vestibulum turpis ac mattis ultricies. Cras tincidunt, ligula a sollicitudin pretium, massa augue facilisis lacus, vel auctor elit nibh et tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin nec congue tellus.
-
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero diam, luctus ut vehicula quis, gravida vel sapien. Sed ultrices bibendum magna vel placerat. Sed et gravida tortor. Sed sodales tortor in massa sollicitudin, non faucibus erat semper. Cras non lacus sollicitudin, sollicitudin arcu vel, vestibulum turpis. Aenean turpis eros, aliquet sed sodales a, ornare ac est. Vivamus id nulla nulla. Ut interdum aliquet lacus, eget accumsan dolor ornare id. Nunc vitae massa at nulla porta mollis ut nec nisi. Cras sit amet elit condimentum, sagittis nisl ut, accumsan erat. Fusce vestibulum quam sed nunc tempor facilisis. Aliquam vehicula, lacus vel pharetra commodo, mauris diam scelerisque orci, sed egestas quam orci eget ante. Ut facilisis nulla eu tortor ornare faucibus.
-
-                  Fusce tempor nulla nec aliquam pellentesque. Vivamus pulvinar lectus non diam elementum ullamcorper. Etiam semper, elit ac viverra congue, urna ligula euismod metus, quis malesuada risus turpis sit amet mauris. Nunc eget vehicula libero. Suspendisse aliquet ipsum non enim dapibus, in congue arcu ultrices. Duis nec maximus augue, sed facilisis eros. Vestibulum commodo ante sit amet sem pharetra vehicula at in justo. Donec lacus sapien, consectetur ornare efficitur sed, gravida nec purus. Vivamus et sodales orci. Vestibulum laoreet mauris fringilla egestas efficitur. Sed lobortis, felis eget pretium pellentesque, orci tortor gravida ipsum, nec maximus orci libero et est. Ut at ante efficitur, imperdiet tellus id, semper purus. Donec porttitor velit sapien, eget egestas leo egestas vitae. Maecenas gravida ipsum sit amet blandit pretium.
-
-                  Sed at justo gravida, pellentesque risus non, bibendum neque. Duis viverra nunc elit, ac euismod mauris venenatis sit amet. Mauris accumsan non lorem id ullamcorper. Curabitur sollicitudin quis purus in aliquet. Vivamus elit lectus, gravida ac convallis ullamcorper, gravida in nisi. In vitae leo eleifend, condimentum ipsum at, ornare nulla. Vestibulum ipsum nulla, dictum et vestibulum a, accumsan id ipsum. Nam tempus leo metus, quis feugiat lectus rhoncus ac. Maecenas eget tellus sit amet purus tincidunt dictum. Sed interdum consectetur porta. Mauris eget condimentum mauris.
-
-                  Aenean justo nibh, blandit ac tempus elementum, convallis at leo. Ut cursus sit amet est at aliquam. Ut cursus vehicula sem non faucibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras mattis nulla quis justo iaculis pharetra. Quisque a sapien nec ex sodales porta ac et neque. Donec sed venenatis nunc. Nulla ac justo in lectus fringilla fringilla.
-
-                  Vivamus vulputate eleifend ligula nec varius. Phasellus convallis est id quam commodo, et ultrices nisi volutpat. Ut laoreet fringilla euismod. Nam vel lorem porta, rhoncus est id, placerat lorem. Donec condimentum, tortor id venenatis condimentum, magna magna ullamcorper neque, sed congue dui est id est. Morbi placerat, nibh sit amet feugiat ornare, odio nulla pharetra nunc, eu accumsan nisi velit in mi. Vivamus facilisis quam in tellus eleifend luctus. Sed vestibulum turpis ac mattis ultricies. Cras tincidunt, ligula a sollicitudin pretium, massa augue facilisis lacus, vel auctor elit nibh et tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin nec congue tellus.
-              </p>
-          </div>
-          <div className="flex w-full justify-end-safe">
-              <Link href="/session/test/test" className="bg-summary-button text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer">Realizar evaluacion</Link>
-          </div>
-      </main>
-  );
+    return (
+        <main className="flex flex-col justify-between h-full p-10 bg-background-secondary rounded-2xl gap-8">
+            <div className="text-4xl font-bold">
+                {loading ? 'Cargando...' : title}
+            </div>
+            <div className="overflow-auto">
+                <p className="text-foreground">
+                    {loading ? '' : summary}
+                </p>
+            </div>
+            <div className="flex w-full justify-end-safe">
+                <Link
+                    href={`/session/${Number(id)}/test`}
+                    className="bg-summary-button text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer"
+                >
+                    Realizar evaluacion
+                </Link>
+            </div>
+        </main>
+    );
 }
