@@ -1,6 +1,12 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const DEV_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
+export class ApiError extends Error {
+    constructor(public status: number, message: string) {
+        super(message)
+    }
+}
+
 export const apiFetch = async (endpoint: string, options?: RequestInit) => {
     const res = await fetch(`${API_URL}${endpoint}`, {
         ...options,
@@ -16,6 +22,10 @@ export const apiFetch = async (endpoint: string, options?: RequestInit) => {
         return
     }
 
-    if (!res.ok) throw new Error(await res.text())
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({ message: 'Error desconocido' }))
+        throw new ApiError(res.status, body.message)
+    }
+
     return res.json()
 }
