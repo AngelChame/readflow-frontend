@@ -19,7 +19,7 @@ export interface MultipleChoiceData {
     questions: MultipleChoiceQuestion[]
 }
 
-//Quiz 2
+// Quiz 2
 export interface Blank {
     position: number
     correct_answer: string
@@ -35,7 +35,6 @@ export interface FillInData {
     questions: FillInQuestion[]
 }
 
-
 // Quiz 3
 export interface EvaluationCriteria {
     required_concepts: string[]
@@ -47,8 +46,23 @@ export interface WritingData {
     evaluation_criteria: EvaluationCriteria
 }
 
+interface QuizUnavailable {
+    available: false
+    timingTag: 'T0' | 'T48'
+}
 
-// Response completas de cada tipo
+interface QuizAvailable {
+    available: true
+    timingTag: 'T0' | 'T48'
+    data: MultipleChoiceData | FillInData | WritingData
+}
+
+export interface QuizApiResponse {
+    studySession: StudySession
+    quiz?: QuizUnavailable
+    quizData?: QuizAvailable
+}
+
 export interface MultipleChoiceQuizResponse {
     studySession: StudySession
     quizData: {
@@ -76,7 +90,7 @@ export interface WritingQuizResponse {
     }
 }
 
-export type QuizResponse = MultipleChoiceQuizResponse | FillInQuizResponse | WritingQuizResponse;
+export type QuizResponse = MultipleChoiceQuizResponse | FillInQuizResponse | WritingQuizResponse
 
 // Type guards
 export const isMultipleChoice = (quiz: QuizResponse): quiz is MultipleChoiceQuizResponse =>
