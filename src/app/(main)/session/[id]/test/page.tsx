@@ -21,7 +21,6 @@ export default function TestPage() {
         const fetchQuiz = async () => {
             try {
                 const data = await getQuizService(Number(id))
-                console.log('data recibida:', data)
 
                 if (!data || !data.quizData) {
                     setError('No se pudo cargar el quiz')
@@ -35,11 +34,6 @@ export default function TestPage() {
 
                 setQuiz(data)
             } catch (e) {
-                console.log('instancia ApiError:', e instanceof ApiError)
-                console.log('error completo:', e)
-                if (e instanceof ApiError) {
-                    console.log('status:', e.status)
-                }
                 if (e instanceof ApiError && e.status === 404) {
                     router.push('/dashboard')
                 } else if (e instanceof ApiError && e.status === 403) {
