@@ -46,7 +46,9 @@ export const apiFetch = async <T = unknown>(
     }
 
     // refesh de token
-    if (res.status === 401 && !_retry) {
+    const isAuthRoute = endpoint.startsWith("/auth/");
+
+    if (res.status === 401 && !_retry && !isAuthRoute) {
         const refreshed = await attemptRefresh();
 
         if (refreshed) {

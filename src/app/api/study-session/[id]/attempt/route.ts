@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serverFetch } from "@/lib/api/server.fetch";
 
-export async function GET(
+export async function POST(
     req: NextRequest,
     { params }: { params: { id: string } }
 ) {
     try {
-        const res = await serverFetch(`/study-session/${params.id}/quiz`);
+        const body = await req.json();
+        const res = await serverFetch(`/study-session/${params.id}/attempt`, {
+            method: "POST",
+            body: JSON.stringify(body),
+        });
         const data = await res.json();
 
         if (!res.ok) {
