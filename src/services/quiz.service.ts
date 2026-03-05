@@ -2,6 +2,29 @@ import { apiFetch } from "@/services/api.service";
 import type { QuizApiResponse, QuizResponse } from "@/types/api/quiz/quiz.response";
 import type { FillInAttemptResponse, MultipleChoiceAttemptResponse, WritingAttemptResponse } from "@/types/api/quiz/attempt.response";
 
+export interface CreateSessionResponse {
+    message: string;
+    studySession: { id: number;[key: string]: unknown };
+    document: unknown;
+    keyConcepts: unknown;
+}
+
+export const createStudySessionService = async (
+    file: File,
+    summaryDifficultyId: number,
+    typeEvaluationId: number
+): Promise<CreateSessionResponse> => {
+    const formData = new FormData();
+    formData.append("document", file);
+    formData.append("summaryDifficultyId", String(summaryDifficultyId));
+    formData.append("typeEvaluationId", String(typeEvaluationId));
+
+    return apiFetch<CreateSessionResponse>("/study-session", {
+        method: "POST",
+        body: formData,
+    });
+};
+
 export const getQuizService = async (quizId: number): Promise<QuizResponse> => {
     const data = await apiFetch<QuizApiResponse>(`/study-session/${quizId}/quiz`, {});
     return {
@@ -42,3 +65,4 @@ export const submitWritingService = async (
         body: JSON.stringify({ answers }),
     });
 };
+

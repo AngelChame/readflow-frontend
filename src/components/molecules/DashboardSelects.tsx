@@ -12,20 +12,22 @@ interface DashboardSelectsProps {
 export default function DashboardSelects({
     difficulties,
     evaluationTypes,
+    onDifficultyChange,
+    onEvaluationTypeChange,
 }: DashboardSelectsProps) {
     return (
         <div className="flex items-center gap-8 justify-center mb-6">
             <select
                 defaultValue=""
                 className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none"
-                onChange={() => { }}
+                onChange={(e) => onDifficultyChange?.(Number(e.target.value))}
             >
                 <option value="" disabled>
-                    Selecciona el tipo de resumen
+                    Selecciona el nivel de resumen
                 </option>
-                {evaluationTypes.map((et) => (
-                    <option key={et.id} value={et.id}>
-                        {et.displayName}
+                {difficulties.map((d) => (
+                    <option key={d.id} value={d.id}>
+                        {d.displayName}
                     </option>
                 ))}
             </select>
@@ -33,14 +35,14 @@ export default function DashboardSelects({
             <select
                 defaultValue=""
                 className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none"
-                onChange={() => { }}
+                onChange={(e) => onEvaluationTypeChange?.(Number(e.target.value))}
             >
                 <option value="" disabled>
-                    Seleccione dificultad de la evaluación
+                    Selecciona el tipo de evaluación
                 </option>
-                {difficulties.map((d) => (
-                    <option key={d.id} value={d.id}>
-                        {d.displayName}
+                {evaluationTypes.map((et) => (
+                    <option key={et.id} value={et.id}>
+                        {et.displayName}
                     </option>
                 ))}
             </select>

@@ -7,7 +7,8 @@ export async function POST(
 ) {
     try {
         const body = await req.json();
-        const res = await serverFetch(`/study-session/${params.id}/attempt`, {
+        const { id } = await params;
+        const res = await serverFetch(`/study-session/${id}/attempt`, {
             method: "POST",
             body: JSON.stringify(body),
         });

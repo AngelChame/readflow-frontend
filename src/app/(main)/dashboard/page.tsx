@@ -1,7 +1,6 @@
-import DropZone from "@/components/molecules/DropZone";
 import StreakCard from "@/components/molecules/StreakCard";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
-import DashboardSelects from "@/components/molecules/DashboardSelects";
+import DashboardForm from "@/components/organisms/DashboardForm";
 import { serverFetch } from "@/lib/api/server.fetch";
 import type { CatalogsData } from "@/types/api/catalogs.types";
 
@@ -43,16 +42,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <DashboardSelects
-          difficulties={catalogs.difficulties}
-          evaluationTypes={catalogs.evaluationTypes}
-        />
-        <div className="flex items-center justify-center">
-          <DropZone />
-        </div>
-        <div className="flex items-center justify-center">
-          <input type="submit" value="Generar" className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02]" />
-        </div>
+        <DashboardForm catalogs={catalogs} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-full">
