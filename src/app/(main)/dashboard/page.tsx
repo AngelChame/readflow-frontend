@@ -1,7 +1,9 @@
 import DropZone from "@/components/molecules/DropZone";
 import StreakCard from "@/components/molecules/StreakCard";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
+import DashboardSelects from "@/components/molecules/DashboardSelects";
 import { serverFetch } from "@/lib/api/server.fetch";
+import type { CatalogsData } from "@/types/api/catalogs.types";
 
 async function getCurrentStreak(): Promise<number> {
   try {
@@ -14,8 +16,22 @@ async function getCurrentStreak(): Promise<number> {
   }
 }
 
+async function getCatalogs(): Promise<CatalogsData> {
+  try {
+    const res = await serverFetch("/catalogs");
+    if (!res.ok) return { difficulties: [], evaluationTypes: [] };
+    const json = await res.json();
+    return json.data as CatalogsData;
+  } catch {
+    return { difficulties: [], evaluationTypes: [] };
+  }
+}
+
 export default async function DashboardPage() {
-  const currentStreak = await getCurrentStreak();
+  const [currentStreak, catalogs] = await Promise.all([
+    getCurrentStreak(),
+    getCatalogs(),
+  ]);
   return (
     <div className="grid grid-rows-[64%_33%] gap-4 h-full">
       <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
@@ -27,24 +43,10 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-8 justify-center mb-6">
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
-            <option value="" disabled>
-              Selecciona el tipo de resumen
-            </option>
-            <option>Resumen fácil</option>
-            <option>Resumen intermedio</option>
-            <option>Resumen difícil</option>
-          </select>
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
-            <option value="" disabled>
-              Seleccione dificultad de la evaluación
-            </option>
-            <option>Fácil</option>
-            <option>Intermedio</option>
-            <option>Difícil</option>
-          </select>
-        </div>
+        <DashboardSelects
+          difficulties={catalogs.difficulties}
+          evaluationTypes={catalogs.evaluationTypes}
+        />
         <div className="flex items-center justify-center">
           <DropZone />
         </div>
