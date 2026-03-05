@@ -1,10 +1,21 @@
-"use client";
-
 import DropZone from "@/components/molecules/DropZone";
 import StreakCard from "@/components/molecules/StreakCard";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
+import { serverFetch } from "@/lib/api/server.fetch";
 
-export default function DashboardPage() {
+async function getCurrentStreak(): Promise<number> {
+  try {
+    const res = await serverFetch("/users/me");
+    if (!res.ok) return 0;
+    const data = await res.json();
+    return data.streak?.currentStreak ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export default async function DashboardPage() {
+  const currentStreak = await getCurrentStreak();
   return (
     <div className="grid grid-rows-[64%_33%] gap-4 h-full">
       <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
@@ -57,7 +68,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="md:col-span-1 h-full">
-          <StreakCard streak={3} />
+          <StreakCard streak={currentStreak} />
         </div>
       </div>
     </div>
