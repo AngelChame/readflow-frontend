@@ -1,5 +1,4 @@
-export class ApiError extends Error {
-    constructor(public status: number, message: string, public errors?: Record<string, string[]>) {
+export class ApiError extends Error {constructor(public status: number, message: string, public errors?: Record<string, string[]>) {
         super(message);
     }
 }
@@ -32,20 +31,25 @@ export const apiFetch = async <T = unknown>(
 ): Promise<T> => {
     const { _retry, ...fetchOptions } = options;
 
+    const headers: Record<string, string> = {
+        ...(fetchOptions.headers as Record<string, string>),
+    };
+    if (!(fetchOptions.body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+    }
+
     const res = await fetch(`/api${endpoint}`, {
         ...fetchOptions,
-        headers: {
-            "Content-Type": "application/json",
-            ...fetchOptions.headers,
-        },
+        headers,
         credentials: "include",
     });
 
     if (res.ok) {
-        return res.json() as Promise<T>;
+        const text = await res.text();
+        return (text ? JSON.parse(text) : null) as T;
     }
 
-    // refesh de token
+    // refresh de token
     const isAuthRoute = endpoint.startsWith("/auth/");
 
     if (res.status === 401 && !_retry && !isAuthRoute) {
@@ -55,10 +59,15 @@ export const apiFetch = async <T = unknown>(
             return apiFetch<T>(endpoint, { ...options, _retry: true });
         }
 
-        window.location.href = "/login?reason=session_expired";
+        if (typeof window !== "undefined") {
+            window.location.href = "/login?reason=session_expired";
+        }
         throw new ApiError(401, "Sesión expirada");
     }
 
-    const body = await res.json().catch(() => ({ message: "Error desconocido" }));
+    const body = await res
+        .json()
+        .catch(() => ({ message: "Error desconocido" }));
+
     throw new ApiError(res.status, body.message, body.errors);
 };

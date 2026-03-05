@@ -6,7 +6,8 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     try {
-        const res = await serverFetch(`/study-session/${params.id}/quiz`);
+        const { id } = await params;
+        const res = await serverFetch(`/study-session/${id}/quiz`);
         const data = await res.json();
 
         if (!res.ok) {
