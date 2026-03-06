@@ -4,35 +4,33 @@ import { useState } from "react";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
 import { SessionComparisonChart } from "@/components/molecules/SessionComparisonChart";
 import StreakCard from "@/components/molecules/StreakCard";
+import type { DataPoint } from "@/components/molecules/WeeklyProgressChart";
+import type { SessionComparisonPoint } from "@/components/molecules/SessionComparisonChart";
 
 
-function TopRetentionCard({ value = 90 }: { value?: number }) {
+function TopRetentionCard({ value }: { value: number | null }) {
     return (
         <div className="relative rounded-2xl overflow-hidden bg-[#5B5BD6] h-full select-none">
             <div className="relative z-10 p-6 flex flex-col justify-start h-full">
                 <span className="text-white font-bold leading-none"
                     style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}>
-                    {value}%
+                    {value !== null ? `${value}%` : "—"}
                 </span>
                 <span className="text-white font-semibold mt-2"
                     style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}>
                     Top retención
                 </span>
             </div>
-            <div className="absolute bottom-2 right-4 opacity-90 pointer-events-none">
-                {/* Aqui va una imagen */}
-            </div>
         </div>
     );
 }
 
 
-function SessionCountCard({ count = 15 }: { count?: number }) {
+function SessionCountCard({ count }: { count: number }) {
     return (
         <div className="bg-background-secondary border border-border rounded-2xl p-6 h-full flex flex-col items-center justify-center gap-3 shadow-sm">
             <span className="text-sm text-muted-foreground font-medium">Número de sesiones</span>
             <span className="text-5xl font-bold text-foreground">{count}</span>
-            {/* Aqui va una imagen */}
         </div>
     );
 }
@@ -45,7 +43,21 @@ const TABS = [
 type TabKey = (typeof TABS)[number]["key"];
 
 
-export default function StatsPageClient({ streak }: { streak: number }) {
+interface StatsPageClientProps {
+    streak: number;
+    weeklyData?: DataPoint[];
+    comparisonData?: SessionComparisonPoint[];
+    bestIri: number | null;
+    sessionsCompleted: number;
+}
+
+export default function StatsPageClient({
+    streak,
+    weeklyData,
+    comparisonData,
+    bestIri,
+    sessionsCompleted,
+}: StatsPageClientProps) {
     const [activeTab, setActiveTab] = useState<TabKey>("iri");
 
     return (
@@ -72,15 +84,15 @@ export default function StatsPageClient({ streak }: { streak: number }) {
 
                 <div className="flex-1 min-h-0">
                     {activeTab === "iri"
-                        ? <WeeklyProgressChart />
-                        : <SessionComparisonChart />
+                        ? <WeeklyProgressChart data={weeklyData} />
+                        : <SessionComparisonChart data={comparisonData} />
                     }
                 </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4 h-full">
-                <TopRetentionCard value={90} />
-                <SessionCountCard count={15} />
+                <TopRetentionCard value={bestIri} />
+                <SessionCountCard count={sessionsCompleted} />
                 <StreakCard streak={streak} />
             </div>
 

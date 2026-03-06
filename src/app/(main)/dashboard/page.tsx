@@ -2,7 +2,9 @@ import StreakCard from "@/components/molecules/StreakCard";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
 import DashboardForm from "@/components/organisms/DashboardForm";
 import { serverFetch } from "@/lib/api/server.fetch";
+import { buildWeeklyChartData } from "@/lib/stats.helpers";
 import type { CatalogsData } from "@/types/api/catalogs.types";
+import type { UserStatsResponse } from "@/types/api/stats.types";
 
 async function getCurrentStreak(): Promise<number> {
   try {
@@ -26,11 +28,27 @@ async function getCatalogs(): Promise<CatalogsData> {
   }
 }
 
+async function getStats(): Promise<UserStatsResponse | null> {
+  try {
+    const res = await serverFetch("/stats/me");
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
 export default async function DashboardPage() {
-  const [currentStreak, catalogs] = await Promise.all([
+  const [currentStreak, catalogs, stats] = await Promise.all([
     getCurrentStreak(),
     getCatalogs(),
+    getStats(),
   ]);
+
+  const chartData = stats
+    ? buildWeeklyChartData(stats.iriTimeline, stats.scoreComparison)
+    : undefined;
+
   return (
     <div className="grid grid-rows-[64%_33%] gap-4 h-full">
       <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
@@ -55,7 +73,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           <div className="flex-1 min-h-0">
-            <WeeklyProgressChart />
+            <WeeklyProgressChart data={chartData} />
           </div>
         </div>
 
