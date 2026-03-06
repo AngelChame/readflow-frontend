@@ -1,10 +1,54 @@
-"use client";
-
-import DropZone from "@/components/molecules/DropZone";
 import StreakCard from "@/components/molecules/StreakCard";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
+import DashboardForm from "@/components/organisms/DashboardForm";
+import { serverFetch } from "@/lib/api/server.fetch";
+import { buildWeeklyChartData } from "@/lib/stats.helpers";
+import type { CatalogsData } from "@/types/api/catalogs.types";
+import type { UserStatsResponse } from "@/types/api/stats.types";
 
-export default function DashboardPage() {
+async function getCurrentStreak(): Promise<number> {
+  try {
+    const res = await serverFetch("/users/me");
+    if (!res.ok) return 0;
+    const data = await res.json();
+    return data.streak?.currentStreak ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function getCatalogs(): Promise<CatalogsData> {
+  try {
+    const res = await serverFetch("/catalogs");
+    if (!res.ok) return { difficulties: [], evaluationTypes: [] };
+    const json = await res.json();
+    return json.data as CatalogsData;
+  } catch {
+    return { difficulties: [], evaluationTypes: [] };
+  }
+}
+
+async function getStats(): Promise<UserStatsResponse | null> {
+  try {
+    const res = await serverFetch("/stats/me");
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export default async function DashboardPage() {
+  const [currentStreak, catalogs, stats] = await Promise.all([
+    getCurrentStreak(),
+    getCatalogs(),
+    getStats(),
+  ]);
+
+  const chartData = stats
+    ? buildWeeklyChartData(stats.iriTimeline, stats.scoreComparison)
+    : undefined;
+
   return (
     <div className="grid grid-rows-[64%_33%] gap-4 h-full">
       <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
@@ -16,30 +60,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-8 justify-center mb-6">
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
-            <option value="" disabled>
-              Selecciona el tipo de resumen
-            </option>
-            <option>Resumen fácil</option>
-            <option>Resumen intermedio</option>
-            <option>Resumen difícil</option>
-          </select>
-          <select defaultValue="" className="text-base font-medium border border-border-secondary rounded-2xl px-4 py-2 text-foreground bg-background-secondary outline-none">
-            <option value="" disabled>
-              Seleccione dificultad de la evaluación
-            </option>
-            <option>Fácil</option>
-            <option>Intermedio</option>
-            <option>Difícil</option>
-          </select>
-        </div>
-        <div className="flex items-center justify-center">
-          <DropZone />
-        </div>
-        <div className="flex items-center justify-center">
-          <input type="submit" value="Generar" className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02]" />
-        </div>
+        <DashboardForm catalogs={catalogs} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-full">
@@ -52,12 +73,12 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex-1 min-h-0">
-            <WeeklyProgressChart />
+            <WeeklyProgressChart data={chartData} />
           </div>
         </div>
 
         <div className="md:col-span-1 h-full">
-          <StreakCard streak={3} />
+          <StreakCard streak={currentStreak} />
         </div>
       </div>
     </div>
