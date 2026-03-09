@@ -49,18 +49,23 @@ export function Navbar() {
 
       {/* Botones de auth */}
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          className="px-6 py-3 rounded-3xl bg-white/10 text-white text-xl hover:opacity-90 transition-opacity"
-        >
-          Acceso
-        </button>
-        <button
-          type="button"
-          className="px-6 py-3 rounded-3xl bg-white text-black text-xl hover:opacity-90 transition-opacity"
-        >
-          Registro
-        </button>
+          <Link href={"/login"}>
+              <button
+                  type="button"
+                  className="px-6 py-3 rounded-3xl bg-white/10 text-white text-xl hover:opacity-90 transition-opacity hover:cursor-pointer"
+              >
+                  Acceso
+              </button>
+          </Link>
+
+          <Link href={"/register"}>
+              <button
+                  type="button"
+                  className="px-6 py-3 rounded-3xl bg-white text-black text-xl hover:opacity-90 transition-opacity hover:cursor-pointer"
+              >
+                  Registro
+              </button>
+          </Link>
       </div>
     </header>
   );
