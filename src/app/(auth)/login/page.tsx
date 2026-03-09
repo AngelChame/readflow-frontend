@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 import { Button } from "@/components/animate-ui/components/buttons/button";
 import { loginSchema } from "@/schemas/auth.schema";

@@ -112,7 +112,7 @@ export default function FillInQuiz({ data }: Props) {
                                     if (dragging) handleDropOnBlank(i, dragging)
                                 }}
                                 onClick={() => handleRemoveFromBlank(i)}
-                                className={`inline-block min-w-[100px] mx-1 px-3 py-0.5 rounded-md border-b-2 text-sm font-medium transition-all cursor-pointer align-middle
+                                className={`inline-block min-w-[100px] mx-1 px-3 py-0.3 rounded-md border-2 border-border-secondary text-sm font-medium transition-all cursor-pointer align-middle
                                     ${currentAnswers[i]
                                     ? 'border-border-secondary bg-hover text-foreground'
                                     : 'border-border bg-background text-transparent'
@@ -268,7 +268,7 @@ export default function FillInQuiz({ data }: Props) {
                         <button
                             onClick={handleNext}
                             disabled={!allBlanksFilledForCurrent}
-                            className="px-6 py-3 rounded-xl bg-summary-button text-primary-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
+                            className="px-6 py-3 rounded-xl bg-summary-button text-white text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
                         >
                             Siguiente
                         </button>
@@ -276,7 +276,7 @@ export default function FillInQuiz({ data }: Props) {
                         <button
                             onClick={handleSubmit}
                             disabled={!allBlanksFilledAll || loading}
-                            className="px-6 py-3 rounded-xl bg-summary-button text-primary-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
+                            className="px-6 py-3 rounded-xl bg-summary-button text-white text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
                         >
                             {loading ? 'Enviando...' : 'Enviar'}
                         </button>

@@ -112,7 +112,7 @@ export default function MultipleChoiceQuiz({ data }: Props) {
                 <div className="flex justify-end">
                     <button
                         onClick={() => router.push(`/session/${studySession.id}/summary`)}
-                        className="bg-summary-button text-primary-foreground px-6 py-2 rounded-xl font-semibold hover:opacity-90 transition-opacity hover:cursor-pointer"
+                        className="bg-summary-button text-white px-6 py-2 rounded-xl font-semibold hover:opacity-90 transition-opacity hover:cursor-pointer"
                     >
                         Volver al resumen
                     </button>
@@ -162,7 +162,7 @@ export default function MultipleChoiceQuiz({ data }: Props) {
                     <button
                         onClick={handleNext}
                         disabled={!hasAnswer || loading}
-                        className="px-6 py-3 rounded-xl bg-summary-button text-primary-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
+                        className="px-6 py-3 rounded-xl bg-summary-button text-white text-sm font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity"
                     >
                         {loading ? 'Enviando...' : isLastQuestion ? 'Ver resultados' : 'Siguiente'}
                     </button>

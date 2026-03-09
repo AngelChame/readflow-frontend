@@ -8,6 +8,7 @@ import MultipleChoiceQuiz from '@/components/organisms/quiz/MultipleChoiceQuiz'
 import FillInQuiz from '@/components/organisms/quiz/FillInQuiz'
 import WritingQuiz from '@/components/organisms/quiz/WritingQuiz'
 import { ApiError } from "@/services/api.service";
+import {CircleAlert} from "lucide-react";
 
 export default function TestPage() {
     const { id } = useParams()
@@ -54,8 +55,8 @@ export default function TestPage() {
     if (showUnavailableModal) {
         return (
             <div className="w-full h-full bg-background flex items-center justify-center p-6">
-                <div className="w-full max-w-md bg-background-secondary rounded-2xl p-8 shadow-sm space-y-4 text-center">
-                    <div className="text-4xl">Aqui va icono</div>
+                <div className="w-full max-w-md bg-background-secondary rounded-2xl p-8 shadow-sm space-y-4 text-center flex flex-col items-center">
+                    <CircleAlert></CircleAlert>
                     <h2 className="text-xl font-bold text-foreground">
                         Quiz no disponible
                     </h2>
@@ -65,7 +66,7 @@ export default function TestPage() {
                     </p>
                     <button
                         onClick={() => router.push(`/session/${Number(id)}/summary`)}
-                        className="w-full bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+                        className="w-full bg-summary-button text-font px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
                     >
                         Ir al resumen
                     </button>

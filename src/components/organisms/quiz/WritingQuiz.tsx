@@ -126,7 +126,7 @@ export default function WritingQuiz({ data }: Props) {
                 <div className="flex justify-end">
                     <button
                         onClick={() => router.push(`/session/${studySession.id}/summary`)}
-                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
                         Volver al resumen
                     </button>
                 </div>
@@ -163,7 +163,7 @@ export default function WritingQuiz({ data }: Props) {
                     <button
                         onClick={handleSubmit}
                         disabled={!canSubmit || loading}
-                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity">
+                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity">
                         {loading ? 'Enviando...' : 'Enviar'}
                     </button>
                 </div>
