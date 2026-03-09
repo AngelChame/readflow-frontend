@@ -47,7 +47,7 @@ export default function HistoryCard({
     status,
 }: HistoryCardData) {
     return (
-        <Link href={`/session/${id}/summary`}>
+        <Link href={`/history/${id}`}>
             <div className="bg-background-secondary border border-out-border rounded-2xl p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow duration-200 h-full cursor-pointer">
 
                 <div className="flex items-start justify-between gap-2 mb-10">
