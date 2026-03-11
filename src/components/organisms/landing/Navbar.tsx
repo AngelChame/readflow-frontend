@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import logo from "@/../public/logo/logo.svg";
+
 
 const navLinks = [
   { label: "Inicio", href: "#inicio" },
@@ -15,13 +17,7 @@ export function Navbar() {
     <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-10 py-6 bg-black/10 backdrop-blur-md border-b border-white/10 transition-all">
       {/* Logo */}
       <Link href="#inicio" className="flex items-center gap-2">
-        <Image
-          src="/logo/logo.svg"
-          alt="ReadFlow Logo"
-          width={40}
-          height={40}
-        />
-        <span className="text-white text-xl font-normal">ReadFlow</span>
+          <Image src={logo} alt="ReadFlow Logo" width={40} height={40} />        <span className="text-white text-xl font-normal">ReadFlow</span>
       </Link>
 
       {/* Navegación */}

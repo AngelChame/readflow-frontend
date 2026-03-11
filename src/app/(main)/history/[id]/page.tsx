@@ -17,6 +17,7 @@ export default function HistorySessionPage() {
     useEffect(() => {
         const fetchSession = async () => {
             try {
+                console.log(id);
                 const data = await getHistorySessionService(Number(id));
                 setSession(data);
             } catch {
@@ -57,12 +58,12 @@ export default function HistorySessionPage() {
                 ))}
             </div>
 
-            <div className="h-full p-6 bg-background-secondary rounded-b-2xl rounded-r-2xl overflow-y-auto">
+            <div className="h-full p-16 bg-background-secondary  rounded-r-2xl flex flex-col">
 
                 {/* Pestaña Resumen */}
                 {active === 0 && (
-                    <div className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-4 h-full">
+                        <div className="flex flex-col gap-1 flex-shrink-0">
                             <h1 className="text-2xl font-bold text-foreground">{session.title}</h1>
                             <div className="flex flex-row gap-3 text-sm text-muted-foreground">
                                 <span>{session.difficultyLevel}</span>
@@ -72,7 +73,9 @@ export default function HistorySessionPage() {
                                 <span>{session.originalFilename}</span>
                             </div>
                         </div>
-                        <p className="text-foreground leading-relaxed">{session.summaryBody}</p>
+                        <div className="overflow-y-auto flex-1 min-h-0">
+                            <p className="text-foreground leading-relaxed">{session.summaryBody}</p>
+                        </div>
                     </div>
                 )}
 

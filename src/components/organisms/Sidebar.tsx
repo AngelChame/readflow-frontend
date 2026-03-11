@@ -11,7 +11,7 @@ export default function Sidebar() {
     <aside className=" w-64 h-screen bg-background-secondary flex flex-col p-4 border-r border-border shadow-sm transition-colors">
 
       <div className="flex items-center justify-center gap-3 mb-8 px-2 pt-8">
-        <LogoIcon size={24} className="text-foreground" />
+        <LogoIcon size={30} className="text-foreground" />
         <h2 className="text-xl font-medium text-foreground">ReadFlow</h2>
       </div>
 

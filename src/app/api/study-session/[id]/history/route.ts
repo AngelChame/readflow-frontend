@@ -12,7 +12,7 @@ export async function GET(
         const token = cookieStore.get("access_token")?.value;
         console.log("Token encontrado:", !!token);
 
-        const externalRes = await serverFetch(`/api/v1/study-session/${id}/history`);
+        const externalRes = await serverFetch(`/study-session/${id}/history`);
 
         const data = await externalRes.json();
 

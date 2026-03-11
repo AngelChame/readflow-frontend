@@ -66,7 +66,7 @@ export default function TestPage() {
                     </p>
                     <button
                         onClick={() => router.push(`/session/${Number(id)}/summary`)}
-                        className="w-full bg-summary-button text-font px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+                        className="w-full bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
                     >
                         Ir al resumen
                     </button>
