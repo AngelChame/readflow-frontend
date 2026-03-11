@@ -104,13 +104,13 @@ export default async function HistoryPage({
           {pagination.hasPrevPage ? (
             <Link
               href={`?page=${page - 1}`}
-              className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+              className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
               Anterior
             </Link>
           ) : (
-            <span className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
+            <span className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
               <ChevronLeft className="w-4 h-4" />
               Anterior
             </span>
@@ -123,13 +123,13 @@ export default async function HistoryPage({
           {pagination.hasNextPage ? (
             <Link
               href={`?page=${page + 1}`}
-              className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+              className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
             >
               Siguiente
               <ChevronRight className="w-4 h-4" />
             </Link>
           ) : (
-            <span className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
+            <span className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
               Siguiente
               <ChevronRight className="w-4 h-4" />
             </span>
