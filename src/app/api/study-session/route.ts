@@ -8,13 +8,11 @@ export async function POST(req: NextRequest) {
 
         const formData = await req.formData();
 
-        // No usar serverFetch aquí: este fuerza Content-Type: application/json
-        // que rompe el multipart/form-data. Reenviar el FormData directamente.
+
         const res = await fetch(`${process.env.EXTERNAL_API_URL}/study-session`, {
             method: "POST",
             headers: {
                 ...(token && { Authorization: `Bearer ${token}` }),
-                // NO añadir Content-Type — fetch lo pone automáticamente con boundary para FormData
             },
             body: formData,
         });
