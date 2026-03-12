@@ -46,9 +46,9 @@ export default function WritingQuiz({ data }: Props) {
         const passed = feedback.passed
 
         return (
-            <div className="w-full h-full bg-background-secondary rounded-2xl p-8 shadow-sm space-y-8">
+            <div className="w-full h-full bg-background-secondary rounded-2xl flex flex-row justify-between p-8 shadow-sm space-y-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">
+                    <h1 className="text-1xl font-bold text-foreground">
                         {passed ? '¡Bien hecho!' : 'Sigue practicando'}
                     </h1>
                     <p className="text-muted-foreground mt-1">
@@ -58,11 +58,11 @@ export default function WritingQuiz({ data }: Props) {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="rounded-xl border border-border bg-background p-4 text-center">
-                        <p className="text-3xl font-bold text-green-500">{feedback.concepts_found.length}</p>
+                        <p className="text-xl font-bold text-green-500">{feedback.concepts_found.length}</p>
                         <p className="text-sm text-muted-foreground mt-1">Conceptos encontrados</p>
                     </div>
                     <div className="rounded-xl border border-border bg-background p-4 text-center">
-                        <p className="text-3xl font-bold text-red-400">{feedback.concepts_missing.length}</p>
+                        <p className="text-xl font-bold text-red-400">{feedback.concepts_missing.length}</p>
                         <p className="text-sm text-muted-foreground mt-1">Conceptos faltantes</p>
                     </div>
                 </div>
@@ -119,14 +119,14 @@ export default function WritingQuiz({ data }: Props) {
                 {attempt.iriValue !== null && (
                     <div className="rounded-xl border border-main-purple/30 bg-main-purple/10 p-4 text-center">
                         <p className="text-sm text-main-purple">Índice de Retención (IRI)</p>
-                        <p className="text-3xl font-bold text-main-purple mt-1">{attempt.iriValue}%</p>
+                        <p className="text-2xl font-bold text-main-purple mt-1">{attempt.iriValue}%</p>
                     </div>
                 )}
 
                 <div className="flex justify-end">
                     <button
                         onClick={() => router.push(`/session/${studySession.id}/summary`)}
-                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
                         Volver al resumen
                     </button>
                 </div>
@@ -163,7 +163,7 @@ export default function WritingQuiz({ data }: Props) {
                     <button
                         onClick={handleSubmit}
                         disabled={!canSubmit || loading}
-                        className="bg-summary-button text-primary-foreground px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity">
+                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity">
                         {loading ? 'Enviando...' : 'Enviar'}
                     </button>
                 </div>

@@ -13,6 +13,7 @@ export interface SessionComparisonPoint {
   session: string;   // Nombre/número de sesión: "Ses. 1", "La Ansiedad"
   inmediato: number; // Resultado inmediato (0-100)
   diferido: number;  // Resultado diferido/IRI (0-100)
+  evaluationType?: string; // e.g. "Examen de Opciones Múltiples"
 }
 interface SessionComparisonChartProps {
   data?: SessionComparisonPoint[];
@@ -27,9 +28,19 @@ const defaultData: SessionComparisonPoint[] = [
 ];
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
+
+  const evalType = payload[0].payload.evaluationType;
+
   return (
     <div className="bg-background-secondary border border-border rounded-xl px-3 py-2 shadow-md text-sm space-y-1">
-      <p className="font-medium text-foreground mb-1">{label}</p>
+      <div className="mb-2">
+        <p className="font-medium text-foreground">{label}</p>
+        {evalType && evalType !== "Desconocido" && (
+          <p className="text-xs text-muted-foreground mt-0.5">
+            <span className="font-medium">Evaluación:</span> {evalType}
+          </p>
+        )}
+      </div>
       {payload.map((entry: any) => (
         <p key={entry.name} style={{ color: entry.fill }}>
           {entry.name === "inmediato" ? "Inmediato" : "Diferido (IRI)"}: {entry.value}%
@@ -76,7 +87,7 @@ export function SessionComparisonChart({
             wrapperStyle={{ fontSize: "12px", opacity: 0.6 }}
           />
           <Bar dataKey="inmediato" fill="#5B6AEB" radius={[4, 4, 0, 0]} maxBarSize={32} />
-          <Bar dataKey="diferido"  fill="#A5ADFC" radius={[4, 4, 0, 0]} maxBarSize={32} />
+          <Bar dataKey="diferido" fill="#A5ADFC" radius={[4, 4, 0, 0]} maxBarSize={32} />
         </BarChart>
       </ResponsiveContainer>
     </div>

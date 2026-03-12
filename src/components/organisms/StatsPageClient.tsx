@@ -4,23 +4,31 @@ import { useState } from "react";
 import { WeeklyProgressChart } from "@/components/molecules/WeeklyProgressChart";
 import { SessionComparisonChart } from "@/components/molecules/SessionComparisonChart";
 import StreakCard from "@/components/molecules/StreakCard";
+import { BrainIllustration } from "@/components/atoms/icons/BrainIllustration";
+import { BookIllustration } from "@/components/atoms/icons/BookIllustration";
 import type { DataPoint } from "@/components/molecules/WeeklyProgressChart";
 import type { SessionComparisonPoint } from "@/components/molecules/SessionComparisonChart";
 
 
 function TopRetentionCard({ value }: { value: number | null }) {
     return (
-        <div className="relative rounded-2xl overflow-hidden bg-[#5B5BD6] h-full select-none">
-            <div className="relative z-10 p-6 flex flex-col justify-start h-full">
-                <span className="text-white font-bold leading-none"
-                    style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}>
+        <div className="relative rounded-2xl overflow-hidden bg-[#5B6AEB] h-full select-none flex flex-col items-center">
+
+            <div className="relative z-10 pt-4 flex flex-col items-center w-full">
+                <span className="text-white font-bold leading-none tracking-tight"
+                    style={{ fontSize: "56px" }}>
                     {value !== null ? `${value}%` : "—"}
                 </span>
-                <span className="text-white font-semibold mt-2"
-                    style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}>
+                <span className="text-white font-semibold mt-1"
+                    style={{ fontSize: "16px" }}>
                     Top retención
                 </span>
             </div>
+
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full flex justify-center pointer-events-none">
+                <BrainIllustration className="w-[60%] h-auto drop-shadow-sm opacity-100 object-contain" size={300} />
+            </div>
+
         </div>
     );
 }
@@ -28,9 +36,18 @@ function TopRetentionCard({ value }: { value: number | null }) {
 
 function SessionCountCard({ count }: { count: number }) {
     return (
-        <div className="bg-background-secondary border border-border rounded-2xl p-6 h-full flex flex-col items-center justify-center gap-3 shadow-sm">
-            <span className="text-sm text-muted-foreground font-medium">Número de sesiones</span>
-            <span className="text-5xl font-bold text-foreground">{count}</span>
+        <div className="relative bg-background-secondary border border-border rounded-2xl overflow-hidden h-full flex flex-col items-center shadow-sm">
+
+            <div className="relative z-10 pt-5 flex flex-col items-center gap-1 w-full">
+                <span className="text-[17px] text-foreground font-medium">Número de sesiones</span>
+                <span className="text-[56px] font-bold text-foreground leading-none tracking-tight">{count}</span>
+            </div>
+
+            
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full flex justify-center pointer-events-none">
+                <BookIllustration className="w-[45%] h-auto drop-shadow-sm opacity-100 object-contain" size={250} />
+            </div>
+
         </div>
     );
 }

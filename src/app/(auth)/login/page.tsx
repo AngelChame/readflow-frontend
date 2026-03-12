@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 import { Button } from "@/components/animate-ui/components/buttons/button";
 import { loginSchema } from "@/schemas/auth.schema";
@@ -11,8 +10,6 @@ import { ApiError } from "@/services/api.service";
 import { z } from "zod";
 
 export default function LoginPage() {
-    const router = useRouter();
-
     const [form, setForm] = useState({ email: "", password: "" });
     const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
     const [rootError, setRootError] = useState<string | null>(null);
@@ -42,8 +39,7 @@ export default function LoginPage() {
         setLoading(true);
         try {
             await loginService(form.email, form.password);
-            router.push("/dashboard");
-            router.refresh();
+            window.location.href = "/dashboard";
         } catch (err: unknown) {
             const error = err as ApiError;
             if (error.errors) {

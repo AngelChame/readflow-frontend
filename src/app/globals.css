@@ -2,7 +2,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background-secondary: #ffffff;
+    --font:#000000;
+    --font-secondary:#FFF;
+    --background-secondary: #ffffff;
   --hover: #EAEAEA;
   --border: oklch(0.929 0.013 255.508);
   --border-secondary: #000000;
@@ -45,6 +47,8 @@
 }
 
 .dark {
+    --font:#FFFFFF;
+    --font-secondary:#000;
   --background: oklch(0 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --background-secondary: #1a1a1a;
@@ -87,6 +91,8 @@
 }
 
 @theme {
+    --color-font: var(--font);
+    --color-font-secondary: var(--font-secondary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-background-secondary: var(--background-secondary);
