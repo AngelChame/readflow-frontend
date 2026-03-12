@@ -7,7 +7,7 @@ const sections = [
   {
     title: "La solución:",
     content:
-      "ReadFlow rompe este ciclo transformando tus textos estáticos en un entrenamiento mental dinámico. Al subir tus documentos, nuestra Inteligencia Artificial genera resúmenes estructurados y cuestionarios interactivos al instante.",
+      "ReadFlow al subir tus documentos, nuestra Inteligencia Artificial genera resúmenes estructurados y cuestionarios interactivos al instante y asi rompe este ciclo transformando tus textos estáticos en un reforzamiento dinámico. ",
   },
 ];
 
