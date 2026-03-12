@@ -41,7 +41,7 @@ export function HeroSection() {
         </p>
 
         <a
-          href="#accede"
+          href="/register"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-3xl shadow-[0_0_33px_#ffffff70] text-black text-xl transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
         >
           Accede ahora →

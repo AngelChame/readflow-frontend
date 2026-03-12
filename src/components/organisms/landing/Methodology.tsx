@@ -9,7 +9,7 @@ const steps = [
     number: "2",
     title: "Ciclo de Evaluación",
     description:
-      "Una vez estés preparado podrás realizar tu evaluación inmediata y a las próximas 48hrs tu evaluación espaciada.",
+      "Realizas tu dos tipos de evaluación, una inmediata y a las próximas 48hrs tu evaluación espaciada.",
   },
   {
     number: "3",
