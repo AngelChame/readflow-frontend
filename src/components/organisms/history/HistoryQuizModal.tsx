@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image"
-import brain from "@/../public/icons/brain.png"
+import brain from "@/../public/icons/brainModal.png"
 
 interface Props {
     title: string;
