@@ -49,14 +49,20 @@ export default function HistorySessionPage() {
             setT48Loading(true);
             try {
                 const data = await apiFetch<{
-                    quiz?: { available: boolean; hoursRemaining?: number; minutesRemaining?: number }
+                    quiz?: { available: boolean; hoursRemaining?: number; minutesRemaining?: number };
+                    quizData?: { available: boolean };
                 }>(`/study-session/${id}/quiz`);
-                if (data.quiz) {
+
+                const quizInfo = data.quiz ?? (data.quizData ? { available: true } : null);
+
+                if (quizInfo) {
                     setT48Status({
-                        available: data.quiz.available,
-                        hoursRemaining: data.quiz.hoursRemaining,
-                        minutesRemaining: data.quiz.minutesRemaining,
+                        available: quizInfo.available,
+                        hoursRemaining: data.quiz?.hoursRemaining,
+                        minutesRemaining: data.quiz?.minutesRemaining,
                     });
+                } else {
+                    setT48Status({ available: false });
                 }
             } catch {
                 setT48Status({ available: false });
@@ -165,13 +171,13 @@ export default function HistorySessionPage() {
                             />
                         )}
 
-                        {session.attempts.t0 && !session.attempts.t48 && !t48Loading && (
+                        {session.attempts.t0 && !session.attempts.t48 && !t48Loading && t48Status !== null && (
                             <HistoryQuizModal
                                 showBrain
-                                title={t48Status?.available ? "¡El quiz espaciado está disponible!" : ""}
-                                minutesRemaining={!t48Status?.available ? t48Status?.minutesRemaining : undefined}
-                                buttonText={t48Status?.available ? "Realizar quiz espaciado" : undefined}
-                                onAction={t48Status?.available ? () => router.push(`/session/${id}/test`) : undefined}
+                                title={t48Status.available ? "¡El quiz espaciado está disponible!" : ""}
+                                minutesRemaining={!t48Status.available ? t48Status.minutesRemaining : undefined}
+                                buttonText={t48Status.available ? "Realizar quiz espaciado" : undefined}
+                                onAction={t48Status.available ? () => router.push(`/session/${id}/test`) : undefined}
                             />
                         )}
                     </div>
