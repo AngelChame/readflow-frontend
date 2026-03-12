@@ -93,7 +93,7 @@ export default function HistorySessionPage() {
                         onClick={() => setActive(index)}
                         className={`px-6 py-3 font-medium transition-colors duration-300 rounded-t-2xl ${
                             active === index
-                                ? "text-font-secondary bg-summary-button hover:cursor-default"
+                                ? "text-white bg-summary-button hover:cursor-default"
                                 : "text-font hover:cursor-pointer bg-background-secondary"
                         }`}
                     >
