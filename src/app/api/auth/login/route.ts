@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loginSchema } from "@/schemas/auth.schema";
 import { z } from "zod";
+import {cookies} from "next/headers";
 
 export async function POST(req: NextRequest) {
     try {
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 15,
+            maxAge: 60 * 60 * 24 * 3,
             path: "/",
         });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { Particles } from "@/components/ui/particles";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -40,12 +41,9 @@ export function HeroSection() {
           Con <strong>ReadFlow</strong> lee una vez, apréndelo para siempre.
         </p>
 
-        <a
-          href="#accede"
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-3xl shadow-[0_0_33px_#ffffff70] text-black text-xl transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
-        >
-          Accede ahora →
-        </a>
+          <Link href={"/login"} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-3xl shadow-[0_0_33px_#ffffff70] text-black text-xl transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+            <span>Accede ahora →</span>
+          </Link>
       </div>
     </section>
   );

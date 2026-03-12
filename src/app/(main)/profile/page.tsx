@@ -60,14 +60,6 @@ export default async function ProfilePage() {
         </div>
 
         <div className="flex flex-col justify-center gap-3 px-100 py-8 flex-1 relative">
-
-          <button
-            aria-label="Editar perfil"
-            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-main-purple text-white flex items-center justify-center hover:opacity-90 transition-opacity"
-          >
-            <IconPencil size={15} />
-          </button>
-
           <h2 className="text-2xl font-semibold text-foreground">{name}</h2>
           <p className="text-sm text-foreground/60">Mejorando mi retención 📚</p>
           <div className="flex items-center gap-2 text-sm text-foreground">
