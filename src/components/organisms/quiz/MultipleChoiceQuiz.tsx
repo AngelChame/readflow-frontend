@@ -65,9 +65,9 @@ export default function MultipleChoiceQuiz({ data }: Props) {
         const { attempt, feedback } = result
 
         return (
-            <div className="w-full bg-background-secondary rounded-2xl p-8 shadow-sm space-y-6">
+            <div className="w-full bg-background-secondary rounded-2xl p-8 flex flex-col justify-between shadow-sm space-y-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">
+                    <h1 className="text-xl font-bold text-foreground">
                         {feedback.totalCorrect >= Math.ceil(total * 0.6) ? '¡Bien hecho!' : 'Sigue practicando'}
                     </h1>
                     <p className="text-muted-foreground mt-1">
@@ -77,11 +77,11 @@ export default function MultipleChoiceQuiz({ data }: Props) {
 
                 <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-xl border border-border bg-background p-4 text-center">
-                        <p className="text-3xl font-bold text-green-500">{feedback.totalCorrect}</p>
+                        <p className="text-xl font-bold text-green-500">{feedback.totalCorrect}</p>
                         <p className="text-sm text-muted-foreground mt-1">Correctas</p>
                     </div>
                     <div className="rounded-xl border border-border bg-background p-4 text-center">
-                        <p className="text-3xl font-bold text-red-400">
+                        <p className="text-xl font-bold text-red-400">
                             {feedback.totalQuestions - feedback.totalCorrect}
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">Incorrectas</p>
@@ -105,7 +105,7 @@ export default function MultipleChoiceQuiz({ data }: Props) {
                 {attempt.iriValue !== null && (
                     <div className="rounded-xl border border-main-purple/30 bg-main-purple/10 p-4 text-center">
                         <p className="text-sm text-main-purple">Índice de Retención (IRI)</p>
-                        <p className="text-3xl font-bold text-main-purple mt-1">{attempt.iriValue}%</p>
+                        <p className="text-2xl font-bold text-main-purple mt-1">{attempt.iriValue}%</p>
                     </div>
                 )}
 
