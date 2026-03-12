@@ -10,6 +10,8 @@ import { authClient } from "@/lib/api/auth.client";
 import { ApiError } from "@/types/api/auth/auth.types";
 import { z } from "zod";
 import TermsModal from "@/components/organisms/auth/TermsModal";
+import logo from "@/../public/logo/logo.svg";
+import Image from "next/image";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -220,7 +222,7 @@ export default function RegisterPage() {
                         </div>
                         <div className="flex flex-col items-center gap-6 w-full h-fit justify-center text-white z-10">
                             <h2 className="text-4xl font-bold">ReadFlow</h2>
-                            <img src="/logo/logo.svg" alt="" className="z-10 w-16" />
+                            <Image src={logo} alt="" className="z-10 w-16" />
                         </div>
                     </BubbleBackground>
 
