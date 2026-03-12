@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
         });
 
         return response;
-    } catch {
+    } catch(e) {
+        console.error('Register error:', e);
         return NextResponse.json({ message: "Error interno" }, { status: 500 });
     }
 }
