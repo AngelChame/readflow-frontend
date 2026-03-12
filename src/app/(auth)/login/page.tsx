@@ -8,6 +8,8 @@ import { loginSchema } from "@/schemas/auth.schema";
 import { loginService } from "@/services/auth.service";
 import { ApiError } from "@/services/api.service";
 import { z } from "zod";
+import logo from "@/../public/logo/logo.svg";
+import Image from "next/image";
 
 export default function LoginPage() {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -62,7 +64,7 @@ export default function LoginPage() {
                     </div>
                     <div className="flex flex-col items-center gap-6 w-full h-fit text-white z-10">
                         <h2 className="text-4xl font-bold">ReadFlow</h2>
-                        <img src="/logo/logo.svg" alt="" className="z-10 w-16" />
+                        <Image src={logo} alt="" className="z-10 w-16" />
                     </div>
                 </BubbleBackground>
 
