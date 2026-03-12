@@ -99,7 +99,7 @@ export default async function HistoryPage({
         )}
       </div>
 
-      {pagination.totalPages > 1 && (
+      {pagination.totalPages >= 1 && (
         <div className="flex items-center justify-center gap-4 flex-shrink-0">
           {pagination.hasPrevPage ? (
             <Link
