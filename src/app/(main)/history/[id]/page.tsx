@@ -6,15 +6,14 @@ import { HistorySessionDetail } from "@/types/api/history.types";
 import { getHistorySessionService } from "@/services/history.service";
 import { apiFetch } from "@/services/api.service";
 import HistoryAttemptResults from "@/components/organisms/history/HistoryAttemptResults";
-import Image from "next/image"
-import brain from "@/../public/icons/brain.png"
+import HistoryQuizModal from "@/components/organisms/history/HistoryQuizModal";
 
 const menuTypes = ["Resumen", "Inmediato", "Espaciado"];
 
 interface T48Status {
     available: boolean;
     hoursRemaining?: number;
-    scheduledFor?: string;
+    minutesRemaining?: number;
 }
 
 export default function HistorySessionPage() {
@@ -49,14 +48,14 @@ export default function HistorySessionPage() {
         const fetchT48Status = async () => {
             setT48Loading(true);
             try {
-                const data = await apiFetch<{ quiz?: { available: boolean; hoursRemaining?: number; scheduledFor?: string } }>(
-                    `/study-session/${id}/quiz`
-                );
+                const data = await apiFetch<{
+                    quiz?: { available: boolean; hoursRemaining?: number; minutesRemaining?: number }
+                }>(`/study-session/${id}/quiz`);
                 if (data.quiz) {
                     setT48Status({
                         available: data.quiz.available,
                         hoursRemaining: data.quiz.hoursRemaining,
-                        scheduledFor: data.quiz.scheduledFor,
+                        minutesRemaining: data.quiz.minutesRemaining,
                     });
                 }
             } catch {
@@ -97,9 +96,9 @@ export default function HistorySessionPage() {
                 ))}
             </div>
 
-            <div className="flex-1 min-h-0 p-16 bg-background-secondary rounded-b-2xl rounded-r-2xl flex flex-col">
+            <div className="flex-1 min-h-0 p-16 bg-background-secondary rounded-b-2xl rounded-r-2xl flex flex-col relative">
 
-                {/*  resumen */}
+                {/* resumen */}
                 {active === 0 && (
                     <div className="flex flex-col gap-4 h-full">
                         <div className="flex flex-col gap-1 flex-shrink-0">
@@ -134,22 +133,12 @@ export default function HistorySessionPage() {
                                 />
                             </div>
                         ) : (
-                            <div className="flex-1 flex items-center justify-center">
-                                <div className="flex flex-col items-center gap-4 text-center max-w-sm">
-                                    <p className="text-foreground font-semibold text-lg">
-                                        Aún no has realizado el quiz inmediato
-                                    </p>
-                                    <p className="text-muted-foreground text-sm">
-                                        Completa el quiz inmediato para ver tus resultados aquí.
-                                    </p>
-                                    <button
-                                        onClick={() => router.push(`/session/${id}/test`)}
-                                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-                                    >
-                                        Ir al quiz
-                                    </button>
-                                </div>
-                            </div>
+                            <HistoryQuizModal
+                                title="Aún no has realizado el quiz inmediato"
+                                description="Completa el quiz inmediato para ver tus resultados aquí."
+                                buttonText="Ir al quiz"
+                                onAction={() => router.push(`/session/${id}/test`)}
+                            />
                         )}
                     </div>
                 )}
@@ -157,53 +146,6 @@ export default function HistorySessionPage() {
                 {/* espaciado */}
                 {active === 2 && (
                     <div className="flex flex-col h-full">
-                        {!session.attempts.t0 && (
-                            <div className="flex-1 flex items-center justify-center">
-                                <div className="flex flex-col items-center gap-4 text-center max-w-sm">
-                                    <p className="text-foreground font-semibold text-lg">
-                                        Primero debes completar el quiz inmediato
-                                    </p>
-                                    <p className="text-muted-foreground text-sm">
-                                        El quiz espaciado se activa 48 horas después de completar el quiz inmediato.
-                                    </p>
-                                    <button
-                                        onClick={() => router.push(`/session/${id}/test`)}
-                                        className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-                                    >
-                                        Ir al quiz inmediato
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        {session.attempts.t0 && !session.attempts.t48 && (
-                            <div className="flex-1 flex items-center justify-center">
-                                {t48Loading ? (
-                                    <p className="text-muted-foreground text-sm">Cargando...</p>
-                                ) : (
-                                    <div className="flex flex-col items-center gap-4 text-center max-w-sm">
-                                        <Image src={brain} height={60} alt={"Cerebro"}></Image>
-                                        <p className="text-foreground font-semibold text-lg">
-                                            {t48Status?.available
-                                                ? "¡El quiz espaciado está disponible!"
-                                                : t48Status?.hoursRemaining !== undefined
-                                                    ? `Vuelve en ${t48Status.hoursRemaining} hrs para poder realizar la evaluación espaciada.`
-                                                    : "El quiz espaciado aún no está disponible."
-                                            }
-                                        </p>
-                                        {t48Status?.available && (
-                                            <button
-                                                onClick={() => router.push(`/session/${id}/test`)}
-                                                className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-                                            >
-                                                Realizar quiz espaciado
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
                         {session.attempts.t48 && (
                             <div className="overflow-y-auto flex-1 min-h-0">
                                 <HistoryAttemptResults
@@ -212,6 +154,25 @@ export default function HistorySessionPage() {
                                     timingLabel="Quiz Espaciado (T48)"
                                 />
                             </div>
+                        )}
+
+                        {!session.attempts.t0 && (
+                            <HistoryQuizModal
+                                title="Primero debes completar el quiz inmediato"
+                                description="El quiz espaciado se activa 48 horas después de completar el quiz inmediato."
+                                buttonText="Ir al quiz inmediato"
+                                onAction={() => router.push(`/session/${id}/test`)}
+                            />
+                        )}
+
+                        {session.attempts.t0 && !session.attempts.t48 && !t48Loading && (
+                            <HistoryQuizModal
+                                showBrain
+                                title={t48Status?.available ? "¡El quiz espaciado está disponible!" : ""}
+                                minutesRemaining={!t48Status?.available ? t48Status?.minutesRemaining : undefined}
+                                buttonText={t48Status?.available ? "Realizar quiz espaciado" : undefined}
+                                onAction={t48Status?.available ? () => router.push(`/session/${id}/test`) : undefined}
+                            />
                         )}
                     </div>
                 )}
