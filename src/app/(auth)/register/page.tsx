@@ -88,7 +88,7 @@ export default function RegisterPage() {
             <main className="py-6 px-10 bg-background min-h-screen w-full h-full flex justify-center">
                 <div className="w-full grid grid-cols-[45%_45%] gap-[10%] items-center">
 
-                    <div className="grid grid-rows-[auto_1fr] gap-10 pl-30 pr-20 py-24 text-foreground self-center">
+                    <div className="grid grid-rows-[auto_1fr] gap-8 pl-30 pr-20 py-15 text-foreground self-center">
                         <div className="flex flex-col gap-3.5">
                             <h2 className="text-5xl font-semibold">Crea tu cuenta</h2>
                             <p className="text-lg font-light">Únete a ReadFlow y transforma cada lectura en un conocimiento permanente.</p>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
                                     autoComplete="username"
                                     value={form.username}
                                     onChange={handleChange}
-                                    className="border border-gray-300 rounded-xl h-10 pl-4"
+                                    className="border border-gray-300 rounded-xl h-9 pl-4"
                                     placeholder="Tu nombre completo"
                                     required
                                 />
