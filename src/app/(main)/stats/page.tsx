@@ -28,7 +28,7 @@ export default async function StatsPage() {
   const [streak, stats] = await Promise.all([getCurrentStreak(), getStats()]);
 
   const weeklyData = stats ? buildWeeklyChartData(stats.iriTimeline, stats.scoreComparison) : undefined;
-  const comparisonData = stats ? buildSessionComparisonData(stats.scoreComparison) : undefined;
+  const comparisonData = stats ? buildSessionComparisonData(stats.scoreComparison, stats.iriTimeline) : undefined;
 
   return (
     <StatsPageClient

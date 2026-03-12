@@ -13,6 +13,7 @@ import {
 export interface DataPoint {
     date: string;   // Etiqueta eje X: "Lun", "20/02", etc.
     value: number;  // 0 a 100
+    evaluationSource?: string; // "Inmediata" o "Espaciada (IRI)"
 }
 
 interface WeeklyProgressChartProps {
@@ -32,10 +33,18 @@ const defaultData: DataPoint[] = [
 
 function CustomTooltip({ active, payload, label }: any) {
     if (!active || !payload?.length) return null;
+
+    const evalSource = payload[0].payload.evaluationSource;
+
     return (
         <div className="bg-background-secondary border border-border rounded-xl px-3 py-2 shadow-md text-sm">
             <p className="text-muted-foreground mb-1">{label}</p>
-            <p className="font-semibold text-main-purple">{payload[0].value}%</p>
+            <p className="font-semibold text-[#5B6AEB] text-lg leading-none">{payload[0].value}%</p>
+            {evalSource && (
+                <p className="text-xs text-muted-foreground mt-1.5">
+                    Modo: <span className="font-medium">{evalSource}</span>
+                </p>
+            )}
         </div>
     );
 }
