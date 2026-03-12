@@ -5,7 +5,7 @@ import type { IriTimelineEntry, ScoreComparisonEntry } from "@/types/api/stats.t
 const DAY_LABELS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 /*Convierte iriTimeline del backend en 7 puntos (últimos 7 días)
- para el WeeklyProgressChart. Usa IRI si está disponible, si no scoreT0.*/  
+ para el WeeklyProgressChart. Usa IRI si está disponible, si no scoreT0.*/
 export function buildWeeklyChartData(
     iriTimeline: IriTimelineEntry[],
     scoreComparison: ScoreComparisonEntry[]
@@ -25,18 +25,27 @@ export function buildWeeklyChartData(
         });
 
         let value = 0;
+        let evaluationSource: string | undefined = undefined;
+
         if (sessionsOfDay.length > 0) {
+            let hasIri = false;
             const values = sessionsOfDay.map((s) => {
-                if (s.iri !== null) return s.iri;
+                if (s.iri !== null) {
+                    hasIri = true;
+                    return s.iri;
+                }
                 const sc = scoreComparison.find((c) => c.sessionId === s.sessionId);
                 return sc?.scoreT0 ?? 0;
             });
+
             value = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+            evaluationSource = hasIri ? "Espaciada (IRI)" : "Inmediata";
         }
 
         days.push({
             date: DAY_LABELS[dayStart.getDay()],
             value,
+            evaluationSource,
         });
     }
 
@@ -46,12 +55,17 @@ export function buildWeeklyChartData(
 /*Convierte scoreComparison del backend en puntos para SessionComparisonChart.
  Muestra las últimas 8 sesiones con scoreT0 (inmediato) y scoreT48/IRI (diferido).*/
 export function buildSessionComparisonData(
-    scoreComparison: ScoreComparisonEntry[]
+    scoreComparison: ScoreComparisonEntry[],
+    iriTimeline: IriTimelineEntry[]
 ): SessionComparisonPoint[] {
-    return scoreComparison.slice(-8).map((s, i) => ({
-        session: s.title.length > 12 ? s.title.slice(0, 12) + "…" : s.title,
-        inmediato: Math.round(s.scoreT0 ?? 0),
-        diferido: Math.round(s.scoreT48 ?? 0),
-    }));
+    return scoreComparison.slice(-8).map((s) => {
+        const timelineMatch = iriTimeline.find(t => t.sessionId === s.sessionId);
+        return {
+            session: s.title.length > 12 ? s.title.slice(0, 12) + "…" : s.title,
+            inmediato: Math.round(s.scoreT0 ?? 0),
+            diferido: Math.round(s.scoreT48 ?? 0),
+            evaluationType: timelineMatch?.evaluationType || "Desconocido",
+        };
+    });
 }
 
