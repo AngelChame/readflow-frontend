@@ -3,7 +3,7 @@ import { serverFetch } from "@/lib/api/server.fetch";
 
 export async function POST(
     req: NextRequest,
-    { params }: { params:Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const body = await req.json();
