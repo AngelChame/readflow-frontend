@@ -3,8 +3,8 @@ import { ThemeToggle } from '../atoms/theme-toggle';
 import { IconAddAd } from '../atoms/icons/IconAddAd';
 import { IconArchive } from '../atoms/icons/IconArchive';
 import { IconStats } from '../atoms/icons/IconStats';
-import { IconLogout } from '../atoms/icons/IconLogout';
 import { LogoIcon } from '../atoms/LogoIcon';
+import { LogoutButton } from '../molecules/LogoutButton';
 
 export default function Sidebar() {
   return (
@@ -36,10 +36,7 @@ export default function Sidebar() {
       </div>
 
       <div className="mt-auto pt-4">
-        <Link href="/login" className="flex items-center gap-3 p-2 text-foreground hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg font-base transition-colors group">
-          <IconLogout className="w-6 h-6 text-foreground group-hover:text-red-500 transition-colors" />
-          <span className="group-hover:text-red-500 transition-colors">Cerrar sesión</span>
-        </Link>
+        <LogoutButton />
       </div>
     </aside>
   );
