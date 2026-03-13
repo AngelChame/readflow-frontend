@@ -82,10 +82,6 @@ export default function FillInQuiz({ data }: Props) {
     if (current + 1 < total) setCurrent((c) => c + 1);
   };
 
-  const handleBack = () => {
-    if (current > 0) setCurrent((c) => c - 1);
-  };
-
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
@@ -282,14 +278,6 @@ export default function FillInQuiz({ data }: Props) {
 
         {/* Navegación */}
         <div className="flex justify-between gap-3 pt-2">
-          <button
-            onClick={handleBack}
-            disabled={current === 0}
-            className="px-6 py-3 rounded-xl border border-border-secondary text-sm font-semibold text-foreground hover:bg-hover disabled:opacity-30 transition-colors"
-          >
-            Regresar
-          </button>
-
           {current + 1 < total ? (
             <button
               onClick={handleNext}

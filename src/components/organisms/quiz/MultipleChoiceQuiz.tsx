@@ -41,10 +41,6 @@ export default function MultipleChoiceQuiz({ data }: Props) {
         }
     }
 
-    const handleBack = () => {
-        if (current > 0) setCurrent((c) => c - 1)
-    }
-
     const handleSubmit = async () => {
         setLoading(true)
         setError(null)
@@ -152,13 +148,6 @@ export default function MultipleChoiceQuiz({ data }: Props) {
                 {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
                 <div className="flex justify-between gap-3 pt-2">
-                    <button
-                        onClick={handleBack}
-                        disabled={current === 0}
-                        className="px-6 py-3 rounded-xl border border-border-secondary text-sm font-semibold text-foreground hover:bg-hover disabled:opacity-30 transition-colors"
-                    >
-                        Regresar
-                    </button>
                     <button
                         onClick={handleNext}
                         disabled={!hasAnswer || loading}
