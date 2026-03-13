@@ -14,6 +14,11 @@ interface Props {
   data: FillInQuizResponse;
 }
 
+interface DraggingItem {
+  word: string;
+  index: number;
+}
+
 export default function FillInQuiz({ data }: Props) {
   const router = useRouter();
   const { studySession, quizData } = data;
@@ -29,18 +34,24 @@ export default function FillInQuiz({ data }: Props) {
   const [answers, setAnswers] = useState<
     Record<number, Record<number, string>>
   >({});
-  const [usedWords, setUsedWords] = useState<Record<number, Set<string>>>({});
+
+  const [answerIndices, setAnswerIndices] = useState<
+    Record<number, Record<number, number>>
+  >({});
+
+  const [usedWords, setUsedWords] = useState<Record<number, Set<number>>>({});
   const [current, setCurrent] = useState(0);
   const [finished, setFinished] = useState(false);
   const [result, setResult] = useState<FillInAttemptResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [dragging, setDragging] = useState<string | null>(null);
+  const [dragging, setDragging] = useState<DraggingItem | null>(null);
 
   const q = questions[current];
   const total = questions.length;
   const currentAnswers = answers[current] ?? {};
-  const currentUsed = usedWords[current] ?? new Set();
+  const currentAnswerIndices = answerIndices[current] ?? {};
+  const currentUsed = usedWords[current] ?? new Set<number>();
 
   const allBlanksFilledForCurrent = q.blanks.every(
     (_, i) => currentAnswers[i] !== undefined,
@@ -49,31 +60,51 @@ export default function FillInQuiz({ data }: Props) {
     question.blanks.every((_, bi) => (answers[qi] ?? {})[bi] !== undefined),
   );
 
-  const handleDropOnBlank = (blankIndex: number, word: string) => {
-    const existing = currentAnswers[blankIndex];
+  const handleDropOnBlank = (
+    blankIndex: number,
+    word: string,
+    wordIndex: number,
+  ) => {
+    const existingWordIndex = currentAnswerIndices[blankIndex];
+
     setAnswers((prev) => ({
       ...prev,
       [current]: { ...(prev[current] ?? {}), [blankIndex]: word },
     }));
+
+    setAnswerIndices((prev) => ({
+      ...prev,
+      [current]: { ...(prev[current] ?? {}), [blankIndex]: wordIndex },
+    }));
+
     setUsedWords((prev) => {
       const prevSet = new Set(prev[current] ?? []);
-      prevSet.add(word);
-      if (existing) prevSet.delete(existing);
+      prevSet.add(wordIndex);
+      if (existingWordIndex !== undefined) prevSet.delete(existingWordIndex);
       return { ...prev, [current]: prevSet };
     });
   };
 
   const handleRemoveFromBlank = (blankIndex: number) => {
     const word = currentAnswers[blankIndex];
+    const wordIndex = currentAnswerIndices[blankIndex];
     if (!word) return;
+
     setAnswers((prev) => {
       const updated = { ...(prev[current] ?? {}) };
       delete updated[blankIndex];
       return { ...prev, [current]: updated };
     });
+
+    setAnswerIndices((prev) => {
+      const updated = { ...(prev[current] ?? {}) };
+      delete updated[blankIndex];
+      return { ...prev, [current]: updated };
+    });
+
     setUsedWords((prev) => {
       const prevSet = new Set(prev[current] ?? []);
-      prevSet.delete(word);
+      if (wordIndex !== undefined) prevSet.delete(wordIndex);
       return { ...prev, [current]: prevSet };
     });
   };
@@ -111,15 +142,16 @@ export default function FillInQuiz({ data }: Props) {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => {
                   e.preventDefault();
-                  if (dragging) handleDropOnBlank(i, dragging);
+                  if (dragging)
+                    handleDropOnBlank(i, dragging.word, dragging.index);
                 }}
                 onClick={() => handleRemoveFromBlank(i)}
                 className={`inline-block min-w-[100px] mx-1 px-3 py-0.3 rounded-md border-2 border-border-secondary text-sm font-medium transition-all cursor-pointer align-middle
-                                    ${
-                                      currentAnswers[i]
-                                        ? "border-border-secondary bg-hover text-foreground"
-                                        : "border-border bg-background text-transparent"
-                                    }`}
+                  ${
+                    currentAnswers[i]
+                      ? "border-border-secondary bg-hover text-foreground"
+                      : "border-border bg-background text-transparent"
+                  }`}
               >
                 {currentAnswers[i] || "___"}
               </span>
@@ -135,7 +167,7 @@ export default function FillInQuiz({ data }: Props) {
     const { attempt, feedback } = result;
 
     return (
-      <div className="w-full h-full flex flex-col justify-between bg-background-secondary rounded-2xl p-8 shadow-sm space-y-4">
+      <div className="w-full bg-background-secondary rounded-2xl p-8 shadow-sm space-y-4">
         <div>
           <h1 className="text-xl font-bold text-foreground">
             {feedback.totalCorrect >= Math.ceil(feedback.totalBlanks * 0.6)
@@ -227,7 +259,6 @@ export default function FillInQuiz({ data }: Props) {
   return (
     <div className="w-full h-full bg-background-secondary flex items-center justify-center rounded-2xl px-40">
       <div className="w-full space-y-12">
-        {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-foreground">
             {studySession.title}
@@ -244,20 +275,20 @@ export default function FillInQuiz({ data }: Props) {
 
         {/* Banco de palabras */}
         <div className="flex flex-wrap gap-2 justify-center">
-          {q.word_bank.map((word) => {
-            const isUsed = currentUsed.has(word);
+          {q.word_bank.map((word, wordIndex) => {
+            const isUsed = currentUsed.has(wordIndex);
             return (
               <div
-                key={word}
+                key={wordIndex}
                 draggable={!isUsed}
-                onDragStart={() => setDragging(word)}
+                onDragStart={() => setDragging({ word, index: wordIndex })}
                 onDragEnd={() => setDragging(null)}
                 className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all select-none
-                                    ${
-                                      isUsed
-                                        ? "border-border bg-background text-muted-foreground cursor-not-allowed opacity-40"
-                                        : "border-border bg-background text-foreground cursor-grab hover:bg-hover hover:border-border-secondary"
-                                    }`}
+                  ${
+                    isUsed
+                      ? "border-border bg-background text-muted-foreground cursor-not-allowed opacity-40"
+                      : "border-border bg-background text-foreground cursor-grab hover:bg-hover hover:border-border-secondary"
+                  }`}
               >
                 {word}
               </div>
@@ -276,7 +307,6 @@ export default function FillInQuiz({ data }: Props) {
 
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-        {/* Navegación */}
         <div className="flex justify-between gap-3 pt-2">
           {current + 1 < total ? (
             <button
