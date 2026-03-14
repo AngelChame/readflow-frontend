@@ -23,12 +23,18 @@ export function proxy(request: NextRequest) {
 
   // sin token redirige automaticamente a login
   if (!token && !isPublic) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", path);
+    return NextResponse.redirect(loginUrl);
   }
 
   // con token redirige a dashboard
   if (token && isPublic) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    const redirect = request.nextUrl.searchParams.get("redirect");
+    const isSafe = redirect?.startsWith("/") && !redirect.startsWith("//");
+    return NextResponse.redirect(
+      new URL(isSafe && redirect ? redirect : "/dashboard", request.url),
+    );
   }
 
   return NextResponse.next();
