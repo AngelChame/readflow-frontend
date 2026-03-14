@@ -2,6 +2,11 @@ import Sidebar from "@/components/organisms/Sidebar";
 import Header from "@/components/organisms/Header";
 import { serverFetch } from "@/lib/api/server.fetch";
 import type { User } from "@/types/api/auth/auth.types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ReadFlow",
+};
 
 async function getUser(): Promise<User | null> {
   try {
@@ -23,21 +28,15 @@ export default async function MainLayout({
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
-
       <Sidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-
         <div className="px-6 pt-6">
           <Header user={user} />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-4">
-          {children}
-        </main>
-
+        <main className="flex-1 overflow-y-auto p-4">{children}</main>
       </div>
-
     </div>
   );
 }
