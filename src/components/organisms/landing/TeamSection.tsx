@@ -1,20 +1,23 @@
 import Image from "next/image";
+import LuisPhoto from "@/../public/photos/Luis.jpg";
+import AntonioPhoto from "@/../public/photos/Antonio.png";
+import AngelPhoto from "@/../public/photos/Angel.png";
 
 const teamMembers = [
   {
     name: "Luis Angel",
     role: "Frontend Developer",
-    image: "/images/team/luis-angel.png",
+    image: LuisPhoto,
   },
   {
     name: "Angel Eduardo",
     role: "FullStack Developer",
-    image: "/images/team/angel-eduardo.png",
+    image: "/images/team/angel-.png",
   },
   {
     name: "Luis Antonio",
     role: "Backend Developer",
-    image: "/photos/Antonio.jpg",
+    image: AntonioPhoto,
   },
 ];
 
@@ -33,7 +36,7 @@ export function TeamSection() {
               alt={member.name}
               width={300}
               height={300}
-              className="rounded-full object-cover w-[250px] h-[250px]"
+              className="rounded-full object-cover w-[250px] h-[250px] shadow-lg hover:scale-105 duration-300 transition-transform"
             />
             <h3 className="font-bold text-black text-xl">{member.name}</h3>
             <p className="text-black text-lg text-center">{member.role}</p>
