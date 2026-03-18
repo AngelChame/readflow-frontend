@@ -11,6 +11,7 @@ import { z } from "zod";
 import logo from "@/../public/logo/logo.svg";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [rootError, setRootError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -116,16 +118,25 @@ export default function LoginPage() {
               <label htmlFor="password" className="text-lg font-bold">
                 Contraseña <span className="text-red-500">*</span>
               </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-xl h-10 pl-4"
-                placeholder="Ingresa tu contraseña"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-xl h-10 pl-4 pr-10 w-full"
+                  placeholder="Ingresa tu contraseña"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               {fieldErrors.password?.[0] && (
                 <p className="text-sm text-red-500">
                   {fieldErrors.password[0]}
