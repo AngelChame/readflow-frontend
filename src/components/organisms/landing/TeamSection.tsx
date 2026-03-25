@@ -12,7 +12,7 @@ const teamMembers = [
   {
     name: "Angel Eduardo",
     role: "FullStack Developer",
-    image: "/images/team/angel-.png",
+    image: AngelPhoto,
   },
   {
     name: "Luis Antonio",
