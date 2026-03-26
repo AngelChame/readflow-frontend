@@ -50,7 +50,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Bottom navbar para móvil */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background-secondary border-t border-border flex items-center justify-around px-4 py-3">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background-secondary border-t border-border flex items-center justify-around px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         <Link
           href="/dashboard"
           className="flex flex-col items-center gap-1 text-foreground"

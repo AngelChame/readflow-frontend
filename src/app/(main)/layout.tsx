@@ -30,12 +30,12 @@ export default async function MainLayout({
     <div className="flex h-screen w-full overflow-hidden">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden space-y-2">
         <div className="px-6 pt-6">
           <Header user={user} />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-4 pb-20 md:pb-4">
+        <main className="flex-1 overflow-y-auto p-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-4 pt-[env(safe-area-inset-top)] md:pt-0">
           {children}
         </main>
       </div>
