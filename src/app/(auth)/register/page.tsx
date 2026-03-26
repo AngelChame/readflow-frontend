@@ -3,16 +3,14 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 import { Button } from "@/components/animate-ui/components/buttons/button";
 import { registerSchema } from "@/schemas/auth.schema";
 import { authClient } from "@/lib/api/auth.client";
 import { ApiError } from "@/types/api/auth/auth.types";
 import { z } from "zod";
 import TermsModal from "@/components/organisms/auth/TermsModal";
-import logo from "@/../public/logo/logo.svg";
-import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
+import { AuthPanel } from "@/components/organisms/auth/AuthPanel";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -87,17 +85,19 @@ export default function RegisterPage() {
         />
       )}
 
-      <main className="py-6 px-10 bg-background min-h-screen w-full h-full flex justify-center">
-        <div className="w-full grid grid-cols-[45%_45%] gap-[10%] items-center">
-          <div className="grid grid-rows-[auto_1fr] gap-8 pl-30 pr-20 py-15 text-foreground self-center">
+      <main className="md:py-6 px-4 md:px-10 bg-background min-h-screen w-full flex justify-center">
+        <div className="w-full grid grid-cols-1 md:grid-cols-[45%_45%] md:gap-[10%] items-center">
+          <div className="grid grid-rows-[auto_1fr] gap-6 px-4 py-6 md:pl-30 md:pr-20 md:py-15 text-foreground self-center">
+            {" "}
             <div className="flex flex-col gap-3.5">
-              <h2 className="text-5xl font-semibold">Crea tu cuenta</h2>
+              <h2 className="text-3xl md:text-5xl font-semibold">
+                Crea tu cuenta
+              </h2>
               <p className="text-lg font-light">
                 Únete a ReadFlow y transforma cada lectura en un conocimiento
                 permanente.
               </p>
             </div>
-
             <div className="flex flex-col gap-8">
               <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                 <label htmlFor="username" className="text-lg font-bold">
@@ -251,27 +251,9 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <BubbleBackground
-            interactive={true}
-            colors={{
-              first: "14,23,102",
-              second: "18,29,173",
-              third: "91,138,210",
-              fourth: "101,136,226",
-              fifth: "51,96,187",
-              sixth: "79,187,233",
-            }}
-            className="rounded-3xl h-full w-full flex flex-col justify-between px-10 py-16 shadow-[0_5px_30px_rgba(91,106,235,0.6)]"
-          >
-            <div className="flex flex-col gap-3.5 text-white z-10">
-              <h3 className="text-xl font-light">Con nosotros</h3>
-              <h2 className="text-3xl font-bold">Mejoras tu retención</h2>
-            </div>
-            <div className="flex flex-col items-center gap-6 w-full h-fit justify-center text-white z-10">
-              <h2 className="text-4xl font-bold">ReadFlow</h2>
-              <Image src={logo} alt="" className="z-10 w-16" />
-            </div>
-          </BubbleBackground>
+          <div className="hidden md:block h-full">
+            <AuthPanel subtitle="Mejoras tu retención" />
+          </div>
         </div>
       </main>
     </>
