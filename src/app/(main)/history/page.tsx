@@ -73,7 +73,7 @@ export default async function HistoryPage({
 
   return (
     <div className="h-full flex flex-col gap-4">
-      <div className="bg-background-secondary rounded-2xl border border-border shadow-sm p-6 flex-1 min-h-0 overflow-y-auto">
+      <div className="bg-background-secondary rounded-2xl border border-border shadow-sm p-3 sm:p-6 flex-1 min-h-0 overflow-y-auto">
         {sessions.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <p className="text-muted-foreground text-sm">
@@ -104,13 +104,13 @@ export default async function HistoryPage({
           {pagination.hasPrevPage ? (
             <Link
               href={`?page=${page - 1}`}
-              className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+              className="bg-summary-button text-white px-3 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:opacity-90 transition-opacity flex items-center gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
               Anterior
             </Link>
           ) : (
-            <span className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
+            <span className="bg-summary-button text-white px-3 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm sm:text-base opacity-40 cursor-not-allowed flex items-center gap-2">
               <ChevronLeft className="w-4 h-4" />
               Anterior
             </span>
@@ -123,13 +123,13 @@ export default async function HistoryPage({
           {pagination.hasNextPage ? (
             <Link
               href={`?page=${page + 1}`}
-              className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+              className="bg-summary-button text-white px-3 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:opacity-90 transition-opacity flex items-center gap-2"
             >
               Siguiente
               <ChevronRight className="w-4 h-4" />
             </Link>
           ) : (
-            <span className="bg-summary-button text-white px-6 py-3 rounded-xl font-semibold opacity-40 cursor-not-allowed flex items-center gap-2">
+            <span className="bg-summary-button text-white px-3 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm sm:text-base opacity-40 cursor-not-allowed flex items-center gap-2">
               Siguiente
               <ChevronRight className="w-4 h-4" />
             </span>

@@ -27,8 +27,8 @@ export default function SummaryPage() {
   }, [id]);
 
   return (
-    <main className="flex flex-col justify-between h-full p-10 bg-background-secondary rounded-2xl gap-8">
-      <div className="text-4xl font-bold">
+    <main className="flex flex-col justify-between h-full p-5 md:p-10 bg-background-secondary rounded-2xl gap-2 md:gap-8">
+      <div className="text-xl md:text-4xl font-bold">
         {loading ? "Cargando..." : title}
       </div>
       <div className="overflow-auto flex-1 min-h-0">
@@ -45,7 +45,7 @@ export default function SummaryPage() {
       <div className="flex w-full justify-end-safe">
         <Link
           href={`/session/${Number(id)}/test`}
-          className="bg-summary-button text-white py-4 px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer"
+          className="bg-summary-button text-white py-2 md:py-4 px-10 md:px-16 rounded-2xl transition-all duration-300 hover:shadow-[0_5px_20px_rgba(30,31,53,0.7)] hover:scale-103 cursor-pointer"
         >
           Realizar evaluacion
         </Link>
