@@ -1,5 +1,4 @@
 import HistoryCard from "@/components/molecules/HistoryCard";
-import { IconPencil } from "@/components/atoms/icons/IconPencil";
 import { IconAt } from "@/components/atoms/icons/IconArroba";
 import { serverFetch } from "@/lib/api/server.fetch";
 import type { StudySessionSummary } from "@/types/api/history.types";

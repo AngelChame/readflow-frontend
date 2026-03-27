@@ -52,7 +52,7 @@ export default function DashboardForm({ catalogs }: DashboardFormProps) {
   };
 
   return (
-    <>
+    <div className=" h-full flex flex-col justify-around">
       <DashboardSelects
         difficulties={catalogs.difficulties}
         evaluationTypes={catalogs.evaluationTypes}
@@ -74,11 +74,11 @@ export default function DashboardForm({ catalogs }: DashboardFormProps) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl mt-8 w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none"
+          className="text-lg py-2 px-10 bg-blue-700 text-white font-bold rounded-xl w-fit self-center cursor-pointer transition-all duration-300 hover:shadow-[0_5px_20px_rgba(91,106,235,0.7)] hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none"
         >
           {loading ? "Procesando..." : "Generar"}
         </button>
       </div>
-    </>
+    </div>
   );
 }
