@@ -195,7 +195,7 @@ export default function FillInQuiz({ data }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {feedback.detail.map((item, qi) => (
             <div key={qi} className="space-y-1.5">
               <p className="text-sm font-medium text-muted-foreground">
@@ -257,8 +257,8 @@ export default function FillInQuiz({ data }: Props) {
 
   // Vista de quiz
   return (
-    <div className="w-full h-full bg-background-secondary flex items-center justify-center rounded-2xl px-40">
-      <div className="w-full space-y-12">
+    <div className="w-full h-full bg-background-secondary overflow-y-auto rounded-2xl px-4 sm:px-16 md:px-40 md:flex md:items-center md:justify-center">
+      <div className="w-full space-y-6 md:space-y-12 py-6 md:pb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">
             {studySession.title}
