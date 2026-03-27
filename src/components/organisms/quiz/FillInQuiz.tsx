@@ -46,6 +46,7 @@ export default function FillInQuiz({ data }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState<DraggingItem | null>(null);
+  const [selectedWord, setSelectedWord] = useState<DraggingItem | null>(null);
 
   const q = questions[current];
   const total = questions.length;
@@ -145,13 +146,22 @@ export default function FillInQuiz({ data }: Props) {
                   if (dragging)
                     handleDropOnBlank(i, dragging.word, dragging.index);
                 }}
-                onClick={() => handleRemoveFromBlank(i)}
-                className={`inline-block min-w-[100px] mx-1 px-3 py-0.3 rounded-md border-2 border-border-secondary text-sm font-medium transition-all cursor-pointer align-middle
-                  ${
-                    currentAnswers[i]
-                      ? "border-border-secondary bg-hover text-foreground"
-                      : "border-border bg-background text-transparent"
-                  }`}
+                onClick={() => {
+                  if (selectedWord) {
+                    handleDropOnBlank(i, selectedWord.word, selectedWord.index);
+                    setSelectedWord(null);
+                  } else {
+                    handleRemoveFromBlank(i);
+                  }
+                }}
+                className={`inline-block min-w-[100px] mx-1 px-3 py-0.3 rounded-md border-2 text-sm font-medium transition-all cursor-pointer align-middle
+                ${
+                  currentAnswers[i]
+                    ? "border-border-secondary bg-hover text-foreground"
+                    : selectedWord
+                      ? "border-main-purple bg-main-purple/10 text-transparent animate-pulse"
+                      : "border-border-secondary bg-background text-transparent"
+                }`}
               >
                 {currentAnswers[i] || "___"}
               </span>
@@ -283,12 +293,22 @@ export default function FillInQuiz({ data }: Props) {
                 draggable={!isUsed}
                 onDragStart={() => setDragging({ word, index: wordIndex })}
                 onDragEnd={() => setDragging(null)}
-                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all select-none
-                  ${
-                    isUsed
-                      ? "border-border bg-background text-muted-foreground cursor-not-allowed opacity-40"
+                onClick={() => {
+                  if (isUsed) return;
+                  if (selectedWord?.index === wordIndex) {
+                    setSelectedWord(null);
+                  } else {
+                    setSelectedWord({ word, index: wordIndex });
+                  }
+                }}
+                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all select-none cursor-pointer
+                ${
+                  isUsed
+                    ? "border-border bg-background text-muted-foreground cursor-not-allowed opacity-40"
+                    : selectedWord?.index === wordIndex
+                      ? "border-main-purple bg-main-purple/20 text-main-purple"
                       : "border-border bg-background text-foreground cursor-grab hover:bg-hover hover:border-border-secondary"
-                  }`}
+                }`}
               >
                 {word}
               </div>
