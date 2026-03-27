@@ -50,9 +50,9 @@ export default async function DashboardPage() {
     : undefined;
 
   return (
-    <div className="grid grid-rows-[64%_33%] gap-4 h-full">
-      <div className="bg-background-secondary p-6 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto">
-        <div className="flex items-center justify-between mb-6">
+    <div className="grid grid-rows-[64%_33%] gap-[3%] h-full">
+      <div className="bg-background-secondary px-6 py-8 rounded-2xl border border-border shadow-sm w-full h-full overflow-y-auto flex flex-col justify-between">
+        <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-medium text-foreground">
               Personaliza tu aprendizaje
