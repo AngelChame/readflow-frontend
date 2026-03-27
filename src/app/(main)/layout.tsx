@@ -27,7 +27,7 @@ export default async function MainLayout({
   const user = await getUser();
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="flex h-dvh w-full overflow-hidden">
       <Sidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden space-y-2">
@@ -35,7 +35,7 @@ export default async function MainLayout({
           <Header user={user} />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-4 pt-[env(safe-area-inset-top)] md:pt-0">
+        <main className="flex-1 overflow-y-auto p-6 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-4 pt-[env(safe-area-inset-top)] md:pt-0">
           {children}
         </main>
       </div>
