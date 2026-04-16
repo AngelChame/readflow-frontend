@@ -76,6 +76,9 @@ export default function Sidebar() {
           <ThemeToggle />
           <span className="text-xs text-foreground">Tema</span>
         </div>
+        <div className="flex flex-col items-center gap-1 text-foreground">
+          <LogoutButton />
+        </div>
       </nav>
     </>
   );
