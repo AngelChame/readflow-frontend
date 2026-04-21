@@ -84,6 +84,66 @@ interface UserDetail {
   }[];
 }
 
+// Query 1 — Ciclo espaciado
+interface CicloEspaciadoRow {
+  user_id: number;
+  username: string;
+  total_sessions: string;
+  registered_at: string;
+  ciclo_status: string;
+  avg_iri: string;
+}
+
+// Query 2 — Ranking IRI
+interface RankingIriRow {
+  user_id: number;
+  username: string;
+  total_sessions: string;
+  sesiones_completadas: string;
+  avg_iri: string;
+  best_iri: string;
+  worst_iri: string;
+  nivel_mas_usado: string | null;
+  clasificacion: string;
+}
+
+// Query 3 — Retención por tipo evaluación
+interface RetencionEvalRow {
+  tipo_evaluacion: string;
+  total_sesiones: string;
+  sesiones_con_t0: string;
+  sesiones_con_t48: string;
+  avg_iri: string;
+  tasa_completacion_pct: string;
+  mejora_promedio: string;
+}
+
+// Query 4 — Racha activa
+interface RachaActivaRow {
+  username: string;
+  current_streak: string;
+  best_streak: string;
+  total_sessions: string;
+  total_t48_completed: string;
+  avg_iri: string;
+  best_iri: string;
+  tasa_completacion_pct: string;
+  estado_racha: string;
+}
+
+// Query 5 — Evolución IRI semanal
+interface EvolucionIriRow {
+  semana_inicio: string;
+  sesiones_completadas: string;
+  usuarios_activos: string;
+  avg_iri_semana: string;
+  avg_score_t0: string;
+  avg_score_t48: string;
+  avg_mejora: string;
+  iri_acumulado: string;
+  estado_hipotesis: string;
+}
+
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const CORRECT_PASSWORD = "readflow_admin_2026";
@@ -299,7 +359,7 @@ function ChartTooltip({ active, payload, label }: any) {
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
-  const [tab, setTab] = useState<"overview" | "users" | "search">("overview");
+  const [tab, setTab] = useState<"overview" | "users" | "search" | "queries">("overview");
   const [globalStats, setGlobalStats] = useState<GlobalStats | null>(null);
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loadingStats, setLoadingStats] = useState(false);
@@ -309,6 +369,15 @@ export default function AdminPage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [userFilter, setUserFilter] = useState("");
+  const [activeQuery, setActiveQuery] = useState<1|2|3|4|5>(1);
+  const [queriesData, setQueriesData] = useState<{
+    cicloEspaciado: CicloEspaciadoRow[] | null;
+    rankingIri: RankingIriRow[] | null;
+    retencionEval: RetencionEvalRow[] | null;
+    rachaActiva: RachaActivaRow[] | null;
+    evolucionIri: EvolucionIriRow[] | null;
+  }>({ cicloEspaciado: null, rankingIri: null, retencionEval: null, rachaActiva: null, evolucionIri: null });
+  const [loadingQuery, setLoadingQuery] = useState(false);
 
   const fetchAll = useCallback(async () => {
     setLoadingStats(true);
@@ -353,6 +422,36 @@ export default function AdminPage() {
       setSearchError("Error de conexión");
     } finally {
       setSearchLoading(false);
+    }
+  }
+
+  async function fetchQuery(queryNum: 1|2|3|4|5) {
+    setActiveQuery(queryNum);
+    const endpointMap: Record<number, string> = {
+      1: "/api/admin/queries/ciclo-espaciado",
+      2: "/api/admin/queries/ranking-iri",
+      3: "/api/admin/queries/retencion-tipo-evaluacion",
+      4: "/api/admin/queries/racha-activa",
+      5: "/api/admin/queries/evolucion-iri-semanal",
+    };
+    const keyMap: Record<number, keyof typeof queriesData> = {
+      1: "cicloEspaciado",
+      2: "rankingIri",
+      3: "retencionEval",
+      4: "rachaActiva",
+      5: "evolucionIri",
+    };
+    const key = keyMap[queryNum];
+    if (queriesData[key] !== null) return; // ya cargado, no re-fetch
+    setLoadingQuery(true);
+    try {
+      const res = await fetch(endpointMap[queryNum]);
+      if (res.ok) {
+        const d = await res.json();
+        setQueriesData(prev => ({ ...prev, [key]: d.data ?? [] }));
+      }
+    } finally {
+      setLoadingQuery(false);
     }
   }
 
@@ -401,7 +500,7 @@ export default function AdminPage() {
       {/* Tabs */}
       <div className="border-b border-border bg-background-secondary">
         <div className="max-w-7xl mx-auto px-6 flex gap-1">
-          {(["overview", "users", "search"] as const).map((t) => (
+          {(["overview", "users", "search", "queries"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -415,7 +514,9 @@ export default function AdminPage() {
                 ? "Resumen global"
                 : t === "users"
                   ? "Participantes"
-                  : "Buscar usuario"}
+                  : t === "queries"
+                    ? "Consultas SQL"
+                    : "Buscar usuario"}
             </button>
           ))}
         </div>
@@ -1006,6 +1107,341 @@ export default function AdminPage() {
                   <div className="bg-background-secondary rounded-2xl border border-border p-8 text-center text-muted-foreground text-sm">
                     Este participante aún no tiene sesiones de estudio.
                   </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === "queries" && (
+          <div className="space-y-6">
+            {/* Header descriptivo */}
+            <div className="bg-background-secondary rounded-2xl border border-border p-5">
+              <h2 className="font-semibold text-foreground mb-1">Consultas SQL de Análisis</h2>
+              <p className="text-sm text-muted-foreground">
+                Validación de hipótesis: <em>"Si los usuarios completan el ciclo de repetición espaciada (T0 + T48), entonces su índice de retención (IRI) tendrá una mejora del 20% en promedio."</em>
+              </p>
+            </div>
+
+            {/* Selector de queries */}
+            <div className="flex flex-wrap gap-2">
+              {([
+                { n: 1 as const, label: "Q1 · Ciclo espaciado" },
+                { n: 2 as const, label: "Q2 · Ranking IRI" },
+                { n: 3 as const, label: "Q3 · Retención x tipo" },
+                { n: 4 as const, label: "Q4 · Racha activa" },
+                { n: 5 as const, label: "Q5 · Evolución semanal" },
+              ]).map(({ n, label }) => (
+                <button
+                  key={n}
+                  onClick={() => fetchQuery(n)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
+                    activeQuery === n
+                      ? "bg-main-purple/15 text-main-purple border-main-purple/40"
+                      : "bg-background-secondary text-muted-foreground border-border hover:text-foreground"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Q1 */}
+            {activeQuery === 1 && (
+              <div className="bg-background-secondary rounded-2xl border border-border p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-foreground">Q1 · Tasa de completación del ciclo espaciado</h3>
+                  <p className="text-sm text-muted-foreground mt-1">¿Cuántos usuarios completaron al menos un T48? Vinculado directo a la hipótesis.</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["CTE", "JOIN múltiple", "COUNT DISTINCT", "CASE", "Subconsulta correlacionada"].map(t => (
+                      <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-main-purple/10 text-main-purple">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {loadingQuery ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Ejecutando query...</div>
+                ) : queriesData.cicloEspaciado === null ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Selecciona la query para ejecutarla.</div>
+                ) : queriesData.cicloEspaciado.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Sin resultados — no hay datos en la base aún.</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border">
+                          {["Usuario", "Sesiones", "Estado ciclo", "IRI promedio", "Registro"].map(h => (
+                            <th key={h} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2 whitespace-nowrap">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {queriesData.cicloEspaciado.map((r, i) => (
+                          <tr key={i} className="border-b border-border/40 hover:bg-hover transition-colors">
+                            <td className="px-3 py-2.5 font-medium text-foreground">{r.username}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{r.total_sessions.toString()}</td>
+                            <td className="px-3 py-2.5">
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${r.ciclo_status === "Completó ciclo" ? "bg-green-500/15 text-green-500" : "bg-amber-500/15 text-amber-500"}`}>
+                                {r.ciclo_status}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.avg_iri) >= 80 ? GREEN : Number(r.avg_iri) >= 60 ? AMBER : Number(r.avg_iri) > 0 ? RED : undefined }}>
+                              {Number(r.avg_iri) > 0 ? r.avg_iri.toString() : "—"}
+                            </td>
+                            <td className="px-3 py-2.5 text-muted-foreground whitespace-nowrap">{formatDate(r.registered_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Q2 */}
+            {activeQuery === 2 && (
+              <div className="bg-background-secondary rounded-2xl border border-border p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-foreground">Q2 · Ranking de usuarios por IRI promedio</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Incluye nivel de dificultad más usado. Solo usuarios con al menos 1 sesión T48 completada.</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["Subconsulta en SELECT", "GROUP BY + HAVING", "AVG / MAX / MIN", "CASE clasificación"].map(t => (
+                      <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-main-purple/10 text-main-purple">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {loadingQuery ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Ejecutando query...</div>
+                ) : queriesData.rankingIri === null ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Selecciona la query para ejecutarla.</div>
+                ) : queriesData.rankingIri.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Sin resultados — no hay datos en la base aún.</div>
+                ) : (
+                  <>
+                    <div className="h-52">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={queriesData.rankingIri.slice(0,10).map(r => ({ name: r.username, avg: Number(r.avg_iri), best: Number(r.best_iri) }))} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.08} vertical={false} />
+                          <XAxis dataKey="name" tick={{ fontSize: 10, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <YAxis tick={{ fontSize: 10, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <Tooltip content={<ChartTooltip />} cursor={{ fill: "currentColor", fillOpacity: 0.04 }} />
+                          <Bar dataKey="avg" name="IRI Promedio" fill={PURPLE} radius={[4,4,0,0]} maxBarSize={36} />
+                          <Bar dataKey="best" name="Mejor IRI" fill={PURPLE_LIGHT} radius={[4,4,0,0]} maxBarSize={36} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border">
+                            {["#", "Usuario", "Sesiones T48", "IRI Prom.", "Mejor IRI", "Peor IRI", "Nivel más usado", "Clasificación"].map(h => (
+                              <th key={h} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2 whitespace-nowrap">{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {queriesData.rankingIri.map((r, i) => (
+                            <tr key={i} className="border-b border-border/40 hover:bg-hover transition-colors">
+                              <td className="px-3 py-2.5 text-muted-foreground">{i + 1}</td>
+                              <td className="px-3 py-2.5 font-medium text-foreground">{r.username}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.sesiones_completadas.toString()}</td>
+                              <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.avg_iri) >= 80 ? GREEN : Number(r.avg_iri) >= 60 ? AMBER : RED }}>{r.avg_iri.toString()}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.best_iri?.toString() ?? "—"}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.worst_iri?.toString() ?? "—"}</td>
+                              <td className="px-3 py-2.5 text-muted-foreground whitespace-nowrap">{r.nivel_mas_usado ?? "—"}</td>
+                              <td className="px-3 py-2.5 whitespace-nowrap">
+                                <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: (r.clasificacion === "Alto rendimiento" ? GREEN : r.clasificacion === "Rendimiento medio" ? PURPLE : r.clasificacion === "Necesita mejorar" ? AMBER : RED) + "22", color: r.clasificacion === "Alto rendimiento" ? GREEN : r.clasificacion === "Rendimiento medio" ? PURPLE : r.clasificacion === "Necesita mejorar" ? AMBER : RED }}>
+                                  {r.clasificacion}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Q3 */}
+            {activeQuery === 3 && (
+              <div className="bg-background-secondary rounded-2xl border border-border p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-foreground">Q3 · Retención y completación por tipo de evaluación</h3>
+                  <p className="text-sm text-muted-foreground mt-1">¿Qué tipo de evaluación genera mejor retención? Solo tipos con al menos 1 sesión.</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["GROUP BY + HAVING", "SUM / COUNT", "Subconsulta en FROM", "Tasa calculada", "NULLIF"].map(t => (
+                      <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-main-purple/10 text-main-purple">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {loadingQuery ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Ejecutando query...</div>
+                ) : queriesData.retencionEval === null ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Selecciona la query para ejecutarla.</div>
+                ) : queriesData.retencionEval.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Sin resultados — no hay datos en la base aún.</div>
+                ) : (
+                  <>
+                    <div className="h-52">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={queriesData.retencionEval.map(r => ({ name: r.tipo_evaluacion.split(" ")[0], iri: Number(r.avg_iri) ?? 0, completacion: Number(r.tasa_completacion_pct) ?? 0 }))} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.08} vertical={false} />
+                          <XAxis dataKey="name" tick={{ fontSize: 10, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <YAxis tick={{ fontSize: 10, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <Tooltip content={<ChartTooltip />} cursor={{ fill: "currentColor", fillOpacity: 0.04 }} />
+                          <Bar dataKey="iri" name="IRI Promedio" fill={PURPLE} radius={[4,4,0,0]} maxBarSize={48} />
+                          <Bar dataKey="completacion" name="% Completación" fill={GREEN} radius={[4,4,0,0]} maxBarSize={48} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border">
+                            {["Tipo evaluación", "Total ses.", "Con T0", "Con T48", "IRI prom.", "% Completación", "Mejora prom."].map(h => (
+                              <th key={h} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2 whitespace-nowrap">{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {queriesData.retencionEval.map((r, i) => (
+                            <tr key={i} className="border-b border-border/40 hover:bg-hover transition-colors">
+                              <td className="px-3 py-2.5 text-foreground max-w-50 truncate">{r.tipo_evaluacion}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.total_sesiones.toString()}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.sesiones_con_t0.toString()}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.sesiones_con_t48.toString()}</td>
+                              <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.avg_iri) >= 80 ? GREEN : Number(r.avg_iri) >= 60 ? AMBER : Number(r.avg_iri) > 0 ? RED : undefined }}>{r.avg_iri !== null ? r.avg_iri.toString() : "—"}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.tasa_completacion_pct !== null ? `${r.tasa_completacion_pct}%` : "—"}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.mejora_promedio !== null ? r.mejora_promedio.toString() : "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Q4 */}
+            {activeQuery === 4 && (
+              <div className="bg-background-secondary rounded-2xl border border-border p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-foreground">Q4 · Usuarios con racha activa y métricas de retención</h3>
+                  <p className="text-sm text-muted-foreground mt-1">¿Los usuarios con racha alta tienen mejor IRI? Solo usuarios que completaron al menos un T48.</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["CTE", "JOIN múltiple", "Subconsulta en WHERE", "COALESCE", "NULLIF"].map(t => (
+                      <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-main-purple/10 text-main-purple">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {loadingQuery ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Ejecutando query...</div>
+                ) : queriesData.rachaActiva === null ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Selecciona la query para ejecutarla.</div>
+                ) : queriesData.rachaActiva.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Sin resultados — no hay datos en la base aún.</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border">
+                          {["Usuario", "Racha actual", "Mejor racha", "Sesiones", "T48 complet.", "IRI prom.", "Mejor IRI", "% Completación", "Estado"].map(h => (
+                            <th key={h} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2 whitespace-nowrap">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {queriesData.rachaActiva.map((r, i) => (
+                          <tr key={i} className="border-b border-border/40 hover:bg-hover transition-colors">
+                            <td className="px-3 py-2.5 font-medium text-foreground">{r.username}</td>
+                            <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.current_streak) > 0 ? GREEN : undefined }}>{r.current_streak.toString()}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{r.best_streak.toString()}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{r.total_sessions.toString()}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{r.total_t48_completed.toString()}</td>
+                            <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.avg_iri) >= 80 ? GREEN : Number(r.avg_iri) >= 60 ? AMBER : Number(r.avg_iri) > 0 ? RED : undefined }}>{Number(r.avg_iri) > 0 ? r.avg_iri.toString() : "—"}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{Number(r.best_iri) > 0 ? r.best_iri.toString() : "—"}</td>
+                            <td className="px-3 py-2.5 text-center text-foreground">{r.tasa_completacion_pct !== null ? `${r.tasa_completacion_pct}%` : "—"}</td>
+                            <td className="px-3 py-2.5 whitespace-nowrap">
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${r.estado_racha === "En racha máxima" ? "bg-green-500/15 text-green-500" : r.estado_racha === "Racha activa" ? "bg-amber-500/15 text-amber-500" : "bg-muted text-muted-foreground"}`}>
+                                {r.estado_racha}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Q5 */}
+            {activeQuery === 5 && (
+              <div className="bg-background-secondary rounded-2xl border border-border p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-foreground">Q5 · Evolución del IRI promedio por semana</h3>
+                  <p className="text-sm text-muted-foreground mt-1">¿El IRI mejora con el tiempo? Muestra tendencia semanal e IRI acumulado con función de ventana.</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["CTE", "DATE_TRUNC", "GROUP BY", "Window function AVG OVER", "TO_CHAR", "CASE hipótesis"].map(t => (
+                      <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-main-purple/10 text-main-purple">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {loadingQuery ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Ejecutando query...</div>
+                ) : queriesData.evolucionIri === null ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Selecciona la query para ejecutarla.</div>
+                ) : queriesData.evolucionIri.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground text-sm">Sin resultados — no hay datos en la base aún.</div>
+                ) : (
+                  <>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={queriesData.evolucionIri.map(r => ({ semana: r.semana_inicio, iri: Number(r.avg_iri_semana), acumulado: Number(r.iri_acumulado), mejora: Number(r.avg_mejora) }))} margin={{ top: 4, right: 16, left: -16, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.08} vertical={false} />
+                          <XAxis dataKey="semana" tick={{ fontSize: 9, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <YAxis tick={{ fontSize: 10, fill: "currentColor", opacity: 0.5 }} axisLine={false} tickLine={false} />
+                          <Tooltip content={<ChartTooltip />} cursor={{ stroke: "currentColor", strokeOpacity: 0.1 }} />
+                          <ReferenceLine y={70} stroke={GREEN} strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: "Meta 70", fill: GREEN, fontSize: 10, position: "right" }} />
+                          <Line type="monotone" dataKey="iri" name="IRI semanal" stroke={PURPLE} strokeWidth={2} dot={{ r: 3, fill: PURPLE }} />
+                          <Line type="monotone" dataKey="acumulado" name="IRI acumulado" stroke={PURPLE_LIGHT} strokeWidth={2} strokeDasharray="4 4" dot={false} />
+                          <Line type="monotone" dataKey="mejora" name="Mejora T0→T48" stroke={GREEN} strokeWidth={1.5} dot={false} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border">
+                            {["Semana", "Ses. complet.", "Usuarios", "IRI sem.", "Score T0", "Score T48", "Mejora", "IRI acum.", "Hipótesis"].map(h => (
+                              <th key={h} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2 whitespace-nowrap">{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {queriesData.evolucionIri.map((r, i) => (
+                            <tr key={i} className="border-b border-border/40 hover:bg-hover transition-colors">
+                              <td className="px-3 py-2.5 text-muted-foreground whitespace-nowrap">{r.semana_inicio}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.sesiones_completadas.toString()}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.usuarios_activos.toString()}</td>
+                              <td className="px-3 py-2.5 text-center font-semibold" style={{ color: Number(r.avg_iri_semana) >= 70 ? GREEN : Number(r.avg_iri_semana) >= 50 ? AMBER : RED }}>{r.avg_iri_semana.toString()}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.avg_score_t0?.toString() ?? "—"}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.avg_score_t48?.toString() ?? "—"}</td>
+                              <td className="px-3 py-2.5 text-center text-foreground">{r.avg_mejora?.toString() ?? "—"}</td>
+                              <td className="px-3 py-2.5 text-center font-semibold text-main-purple">{r.iri_acumulado.toString()}</td>
+                              <td className="px-3 py-2.5 whitespace-nowrap">
+                                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${r.estado_hipotesis === "Hipótesis validada" ? "bg-green-500/15 text-green-500" : r.estado_hipotesis === "Hipótesis parcial" ? "bg-amber-500/15 text-amber-500" : "bg-red-500/15 text-red-400"}`}>
+                                  {r.estado_hipotesis}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </div>
             )}
