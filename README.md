@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ReadFlow — Frontend
 
-## Getting Started
+ReadFlow es una plataforma web de gestión de lectura y estudio. Permite a los usuarios crear sesiones de estudio, generar quizzes, hacer seguimiento de su progreso y mantener rachas de actividad. Incluye un panel de administración con analíticas globales.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 15** con App Router y React 19
+- **TypeScript** con modo estricto
+- **Tailwind CSS v4** + **shadcn/ui** para estilos y componentes
+- **Recharts** para visualización de estadísticas
+- **Zod** para validación de esquemas
+- **Motion** para animaciones
+
+## Requisitos previos
+
+- Node.js 18+
+- npm, yarn, pnpm o bun
+- Una instancia del backend de ReadFlow corriendo (ver variable `EXTERNAL_API_URL`)
+
+## Instalación
+
+1. **Clona el repositorio**
+
+```bash
+git clone https://github.com/AngelChame/readflow-frontend.git
+cd ReadFlow-frontend
+```
+
+2. **Instala las dependencias**
+
+```bash
+npm install
+```
+
+3. **Configura las variables de entorno**
+
+Copia el archivo de ejemplo y rellena los valores correspondientes:
+
+```bash
+cp .env.example .env.local
+```
+
+Edita `.env.local` con los valores de tu entorno (ver sección [Variables de entorno](#variables-de-entorno)).
+
+4. **Inicia el servidor de desarrollo**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts disponibles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | Descripción |
+|---|---|
+| `npm run dev` | Inicia el servidor de desarrollo en `localhost:3000` |
+| `npm run build` | Genera el build de producción |
+| `npm run start` | Inicia el servidor de producción (requiere build previo) |
+| `npm run lint` | Ejecuta ESLint sobre el proyecto |
 
-## Learn More
+## Variables de entorno
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Requerida | Descripción |
+|---|---|---|
+| `EXTERNAL_API_URL` | Sí | URL base del backend de ReadFlow (ej. `http://localhost:8080/api/v1`) |
+| `ADMIN_TOKEN` | Sí | Token de autenticación para las rutas de administración |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Consulta `.env.example` para ver un ejemplo de cada variable.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura del proyecto
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                  # Rutas y páginas (Next.js App Router)
+│   ├── (admin)/          # Layout y páginas del panel admin
+│   ├── (auth)/           # Login y registro
+│   ├── (main)/           # Páginas autenticadas (dashboard, historial, stats)
+│   └── api/              # API routes (proxy hacia el backend)
+├── components/           # Componentes React (atoms → molecules → organisms)
+├── services/             # Lógica de negocio y llamadas a la API
+├── hooks/                # Custom hooks
+├── schemas/              # Esquemas de validación con Zod
+├── types/                # Definiciones de tipos TypeScript
+└── lib/                  # Utilidades y helpers
+```
