@@ -4,12 +4,11 @@ ReadFlow es una plataforma web de gestión de lectura y estudio. Permite a los u
 
 ## Tech Stack
 
-- **Next.js 15** con App Router y React 19
+- **Next.js** con App Router y React
 - **TypeScript** con modo estricto
-- **Tailwind CSS v4** + **shadcn/ui** para estilos y componentes
+- **Tailwind CSS** para estilos y componentes
 - **Recharts** para visualización de estadísticas
 - **Zod** para validación de esquemas
-- **Motion** para animaciones
 
 ## Requisitos previos
 
